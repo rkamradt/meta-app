@@ -1,0 +1,12 @@
+[
+  {
+    "models": [
+      {
+        "name": "modelname1"
+      },
+      {
+        "name": "modelname2"
+      }
+    ]
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "name": "meta-api",
+  "version": "0.0.0",
+  "description": "A metadata based API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Randal L Kamradt Sr",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.11.2",
+    "path": "^0.11.14",
+    "http": "0.0.0",
+    "body-parser": "^1.11.0",
+    "method-override": "^2.3.1",
+    "morgan": "^1.5.1"
+  }
+}
