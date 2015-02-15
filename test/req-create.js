@@ -22,8 +22,8 @@ module.exports = function() {
       'xhr': '',
       'url': path,
       'verb': verb
-    }
+    };
     console.log("req.url: " + req.url);
     return req;
-  }
-}
+  };
+};

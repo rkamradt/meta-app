@@ -1,5 +1,5 @@
 module.exports = function() {
-  return function() {
+  return function(json) {
     var istring = '';
     var msg = '';
     var res = {

@@ -8,7 +8,7 @@ var router = require('./meta-api-rest');
 var morgan = require('morgan');
 var fs = require('fs');
 
-var json = JSON.parse(fs.readFileSync('meta-data.json'));
+var json = JSON.parse(fs.readFileSync('meta-data/meta-data.json'));
 
 app.use(bodyParser.urlencoded({extended: true}));
 

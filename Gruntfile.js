@@ -58,7 +58,7 @@ module.exports = function(grunt) {
           },
         },
         files: {
-          src: ['Gruntfile.js', 'index.js', 'meta-api-rest.js']
+          src: ['Gruntfile.js', 'index.js', 'meta-data/**/*.js', 'test/req-create.js', 'test/res-create.js']
         }
     },
     clean: {
@@ -79,24 +79,24 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: ['Gruntfile.js', 'index.js', 'meta-api-rest.js'],
+        files: ['Gruntfile.js', 'index.js', 'meta-data/**/*.js'],
         tasks: ['jshint'],
         options: {
           interrupt: true,
         }
       },
       tests: {
-        files: ['test/**/*.test.js', 'index.js', 'meta-api-rest.js'],
+        files: ['test/**/*.js', 'index.js', 'meta-data/**/*.js'],
         tasks: ['simplemocha'],
         options: {
           interrupt: true,
         }
       },
       express: {
-        files:  [ 'index.js', 'meta-api-rest.js' ],
+        files:  [ 'index.js' ],
         tasks:  [ 'express:dev' ],
         options: {
-          spawn: false // for grunt-contrib-watch v0.5.0+, "nospawn: true" for lower versions. Without this option specified express won't be reloaded
+          spawn: false
         }
       }
     },
@@ -116,7 +116,7 @@ module.exports = function(grunt) {
   });
   // Default task(s).
   grunt.registerTask('build', ['jshint', 'copy:build' ]);
-  grunt.registerTask('default', ['express:dev', 'watch']);
-  grunt.registerTask('test', ['jshint', 'build', 'express:dev', 'simplemocha', 'express:dev:stop' ]);
+  grunt.registerTask('default', ['watch']);
+  grunt.registerTask('test', ['jshint', 'simplemocha' ]);
 
 };

@@ -1,13 +1,13 @@
 var should = require('should');
 var fs = require('fs');
-var rest = require('../meta-api-rest');
+var rest = require('../meta-data/meta-api-rest');
 var reqCreate = require('./req-create.js')();
 var resCreate = require('./res-create.js')();
-var objCreate = require('./obj-create.js')();
+var objCreate = require('../meta-data/obj-create.js')();
 
-var json = JSON.parse(fs.readFileSync('meta-data.json'));
+var json = JSON.parse(fs.readFileSync('meta-data/meta-data.json'));
 
-var test = JSON.parse(fs.readFileSync('test-data.json'));
+var test = JSON.parse(fs.readFileSync('test/test-data.json'));
 // REST methods:
 // GET returns a list with optional filters
 // GET :id returns a single document
@@ -25,26 +25,14 @@ describe('Rest API', function(){
   beforeEach(function(done) {
     // Use connect method to connect to the Server
     MongoClient.connect(url, function(err, db) {
-      if(err) {
-        console.log("error connecting " + err);
-        done();
-        return;
-      }
+      if(err) return done(err);
       console.log("Connected correctly to server");
       var collection = db.collection('documents');
       collection.drop(function(err, result) {
-        if(err) {
-          console.log("error dropping " + err);
-          done();
-          return;
-        }
+        if(err) return done(err);
         collection = db.collection('documents');
         collection.insert(test[0].data, function(err, result) {
-          if(err) {
-            console.log("error inserting " + err);
-            done();
-            return;
-          }
+          if(err) return done(err);
           console.log("Inserted 2 documents into the document collection");
           db.close();
           done();
