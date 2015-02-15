@@ -1,19 +1,41 @@
 {
-  "name": "meta-api",
-  "version": "0.0.0",
-  "description": "A metadata based API",
+  "name": "meta-app",
+  "version": "0.0.1",
+  "description": "A metadata based App Builder",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rkamradt/meta-app.git"
   },
   "author": "Randal L Kamradt Sr",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rkamradt/meta-app/issues"
+  },
+  "homepage": "https://github.com/rkamradt/meta-app",
   "dependencies": {
     "express": "^4.11.2",
-    "path": "^0.11.14",
-    "http": "0.0.0",
     "body-parser": "^1.11.0",
     "method-override": "^2.3.1",
     "morgan": "^1.5.1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.5.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-express-server": "^0.4.19",
+    "grunt-simple-mocha": "^0.4.0",
+    "jshint": "^2.5.1",
+    "load-grunt-tasks": "^0.5.0",
+    "mocha": "^1.20.1",
+    "should": "^4.0.4",
+    "supertest": "^0.13.0"
   }
 }
