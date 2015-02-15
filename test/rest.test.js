@@ -1,8 +1,11 @@
 var should = require('should');
 var fs = require('fs');
 var rest = require('../meta-api-rest');
+var reqCreate = require('./req-create.js')();
+var resCreate = require('./res-create.js')();
 
 var json = JSON.parse(fs.readFileSync('meta-data.json'));
+var test = JSON.parse(fs.readFileSync('test-data.json'));
 
 
 describe('Rest API', function(){
@@ -17,50 +20,42 @@ describe('Rest API', function(){
     it('should be able to return modelname1 with /modelname1' , function(){
         var sut = rest(json);
         var endvalue = '';
-        var req = {
-          'url': '/modelname1'
-        };
-        var res = {
-          'end': function(s) {
-            endvalue = s;
-          }
-        };
+        var req = reqCreate('/modelname1', '', 'GET');
+        var res = resCreate();
         sut(req, res, function next() {
           throw "next should not be called";
         });
-        endvalue.should.equal('looking at model modelname1');
+        res.message().should.equal('looking at model modelname1');
     });
     it('should be able to return modelname2 with /modelname2' , function(){
         var sut = rest(json);
         var endvalue = '';
-        var req = {
-          'url': '/modelname2'
-        };
-        var res = {
-          'end': function(s) {
-            endvalue = s;
-          }
-        };
+        var req = reqCreate('/modelname2', '', 'GET');
+        var res = resCreate();
         sut(req, res, function next() {
           throw "next should not be called";
         });
-        endvalue.should.equal('looking at model modelname2');
+        res.message().should.equal('looking at model modelname2');
+    });
+    it('should return model not found with path /foo' , function(){
+        var sut = rest(json);
+        var endvalue = '';
+        var req = reqCreate('/foo', '', 'GET');
+        var res = resCreate();
+        sut(req, res, function next() {
+          throw "next should not be called";
+        });
+        res.message().should.equal('model not found');
     });
     it('should return model not found with path /' , function(){
         var sut = rest(json);
         var endvalue = '';
-        var req = {
-          'url': '/'
-        };
-        var res = {
-          'end': function(s) {
-            endvalue = s;
-          }
-        };
+        var req = reqCreate('/', '', 'GET');
+        var res = resCreate();
         sut(req, res, function next() {
           throw "next should not be called";
         });
-        endvalue.should.equal('model not found');
+        res.message().should.equal('model not found');
     });
   });
 });
