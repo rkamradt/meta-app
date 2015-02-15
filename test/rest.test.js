@@ -5,7 +5,7 @@ var reqCreate = require('./req-create.js')();
 var resCreate = require('./res-create.js')();
 var objCreate = require('../meta-data/obj-create.js')();
 
-var json = JSON.parse(fs.readFileSync('meta-data/meta-data.json'));
+var json = JSON.parse(fs.readFileSync('test/meta-data.json'));
 
 var test = JSON.parse(fs.readFileSync('test/test-data.json'));
 // REST methods:
