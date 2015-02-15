@@ -15,10 +15,10 @@ module.exports = function(json) {
     }
     if(!smodel) {
       console.log("model not found");
-      res.end("model not found")
+      res.end("model not found");
       return;
     }
     console.log("looking at model " + smodel.name);
-    res.end("looking at model " + smodel.name)
-  }
-}
+    res.end("looking at model " + smodel.name);
+  };
+};
