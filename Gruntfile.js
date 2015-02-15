@@ -86,7 +86,7 @@ module.exports = function(grunt) {
         }
       },
       tests: {
-        files: ['test/**/*.js', 'index.js', 'meta-data/**/*.js'],
+        files: ['test/**/*.js','test/**/*.json', 'index.js', 'meta-data/**/*.js'],
         tasks: ['simplemocha'],
         options: {
           interrupt: true,

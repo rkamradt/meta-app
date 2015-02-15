@@ -25,7 +25,20 @@ module.exports = function(json) {
       }
     }
     if(data) {
-      // todo read data an apply to model
+      for(var p in data) {
+        var found = false;
+        for(i = 0; i < metadata.properties.length; i++) {
+          var prop = metadata.properties[i];
+          if(p === prop.name) {
+            found = true;
+            break;
+          }
+        }
+        if(!found) {
+          throw "property " + p + " in data not found in model";
+        }
+        ret[p] = data[p];
+      }
     }
     return ret;
   };

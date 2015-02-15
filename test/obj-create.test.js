@@ -26,4 +26,12 @@ describe('Object creation', function() {
       }
     });
   });
+  describe('create object based on meta-data and example', function() {
+    it('should be able to create an object based on modelname1 and data', function() {
+      var sut = objCreator(json)("modelname1", data);
+      sut.should.be.instanceOf(Object);
+      sut.should.have.property('property1', 'data1');
+      sut.should.have.property('property2', 'data2');
+    });
+  });
 });

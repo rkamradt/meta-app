@@ -23,7 +23,6 @@ module.exports = function() {
       'url': path,
       'verb': verb
     };
-    console.log("req.url: " + req.url);
     return req;
   };
 };

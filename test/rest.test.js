@@ -26,14 +26,14 @@ describe('Rest API', function(){
     // Use connect method to connect to the Server
     MongoClient.connect(url, function(err, db) {
       if(err) return done(err);
-      console.log("Connected correctly to server");
       var collection = db.collection('documents');
       collection.drop(function(err, result) {
-        if(err) return done(err);
+        if(err) console.log("drop: " + err);
         collection = db.collection('documents');
-        collection.insert(test[0].data, function(err, result) {
+        var tarray = [];
+        tarray[0] = test;
+        collection.insert(tarray, function(err, result) {
           if(err) return done(err);
-          console.log("Inserted 2 documents into the document collection");
           db.close();
           done();
         });
