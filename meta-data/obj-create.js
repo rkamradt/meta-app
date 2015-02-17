@@ -2,7 +2,7 @@
 module.exports = function(json) {
   return {
     'json': json,
-    'findMetaData': function(modelName) {
+    'findMetadata': function(modelName) {
       var metadata = null;
       for(var i = 0; i < this.json[0].models.length; i++) {
         if(modelName === this.json[0].models[i].name) {
@@ -32,7 +32,7 @@ module.exports = function(json) {
       }
     },
     'create': function(modelName, data) {
-      var metadata = this.findMetaData(modelName);
+      var metadata = this.findMetadata(modelName);
       var ret = {};
       for(var i = 0; i < metadata.properties.length; i++) {
         var property = metadata.properties[i];
