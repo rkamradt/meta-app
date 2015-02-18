@@ -1,4 +1,10 @@
 var ijson;
+// REST methods:
+// GET returns a list with optional filters
+// GET :id returns a single document
+// POST :id {doc} updates a single document
+// PUT {doc} adds a single document
+// DELETE :id deletes a single document
 
 module.exports = function(json) {
   ijson = json;
@@ -13,9 +19,20 @@ module.exports = function(json) {
       }
     }
     if(!smodel) {
-      res.end("model not found");
+      res.status(500).send("model " + req.url + " not found\n");
       return;
     }
-    res.end("looking at model " + smodel.name);
+    if(req.method === 'GET') {
+      res.status(200).send("GET processing on model " + req.url + "\n");
+    } else if(req.method === 'POST') {
+      res.status(200).send("POST processing on model " + req.url + "\n");
+    } else if(req.method === 'PUT') {
+      res.status(200).send("PUT processing on model " + req.url + "\n");
+    } else if(req.method === 'DELETE') {
+      res.status(200).send("DELETE processing on model " + req.url + "\n");
+    } else {
+      res.status(500).send("unrecognized verb");
+      return;
+    }
   };
 };

@@ -1,17 +1,17 @@
-module.exports = function() {
+ module.exports = function() {
   return function() {
-    var istring = '';
-    var msg = '';
     var res = {
       'app': {},
       'headersSent': false,
+      'rstatus': 200,
+      'rmessage': '',
       'locals': {},
 
       'end': function(string) {
-          this.istring = string;
+          this.rmessage += string;
       },
       'message': function() {
-        return this.istring;
+        return this.rmessage;
       },
       'append': function() {},
       'attachment': function() {},
@@ -27,13 +27,17 @@ module.exports = function() {
       'redirect': function() {},
       'render': function() {},
       'send': function(msg) {
-        this.msg += msg;
+        this.rmessage += msg;
         this.headersSent = true;
+        return this;
       },
       'sendFile': function() {},
       'sendStatus': function() {},
       'set': function() {},
-      'status': function() {},
+      'status': function(status) {
+        this.rstatus = status;
+        return this;
+      },
     };
     return res;
   };

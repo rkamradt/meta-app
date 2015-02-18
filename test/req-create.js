@@ -21,7 +21,7 @@ module.exports = function() {
       'subdomains': '',
       'xhr': '',
       'url': path,
-      'verb': verb
+      'method': verb
     };
     return req;
   };

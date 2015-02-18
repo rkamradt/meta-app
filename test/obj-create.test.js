@@ -10,11 +10,11 @@ describe('Metadata access', function() {
   describe('Find metadata based on name', function() {
     it('should be able to find metadata for modelname1', function() {
       var sut = metadata.findMetadata('modelname1');
-      sut.properties.should.be.instanceof(Array).and.have.lengthOf(2)
+      sut.properties.should.be.instanceof(Array).and.have.lengthOf(2);
     });
     it('should be able to find metadata for modelname2', function() {
       var sut = metadata.findMetadata('modelname2');
-      sut.properties.should.be.instanceof(Array).and.have.lengthOf(2)
+      sut.properties.should.be.instanceof(Array).and.have.lengthOf(2);
     });
     it('should not be able to find metadata for foo', function() {
       try {
@@ -62,6 +62,6 @@ describe('Metadata access', function() {
       } catch(e) {
         e.should.be.exactly("property unknownProperty in data not found in model");
       }
-    });
+    }); 
   });
 });

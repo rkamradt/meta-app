@@ -52,7 +52,7 @@ describe('Rest API', function(){
         sut(req, res, function next() {
           throw "next should not be called";
         });
-        res.message().should.equal('looking at model modelname1');
+        res.message().should.equal('GET processing on model /modelname1\n');
     });
     it('should be able to return modelname2 with /modelname2' , function(){
         var sut = rest(json);
@@ -62,7 +62,7 @@ describe('Rest API', function(){
         sut(req, res, function next() {
           throw "next should not be called";
         });
-        res.message().should.equal('looking at model modelname2');
+        res.message().should.equal('GET processing on model /modelname2\n');
     });
     it('should return model not found with path /foo' , function(){
         var sut = rest(json);
@@ -72,7 +72,7 @@ describe('Rest API', function(){
         sut(req, res, function next() {
           throw "next should not be called";
         });
-        res.message().should.equal('model not found');
+        res.message().should.equal('model /foo not found\n');
     });
     it('should return model not found with path /' , function(){
         var sut = rest(json);
@@ -82,7 +82,7 @@ describe('Rest API', function(){
         sut(req, res, function next() {
           throw "next should not be called";
         });
-        res.message().should.equal('model not found');
+        res.message().should.equal('model / not found\n');
     });
   });
 });

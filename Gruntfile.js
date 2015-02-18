@@ -85,18 +85,18 @@ module.exports = function(grunt) {
           interrupt: true,
         }
       },
-      tests: {
-        files: ['test/**/*.js','test/**/*.json', 'index.js', 'meta-data/**/*.js'],
-        tasks: ['simplemocha'],
-        options: {
-          interrupt: true,
-        }
-      },
       express: {
-        files:  [ 'index.js' ],
-        tasks:  [ 'express:dev' ],
+        files:  [ 'index.js', 'meta-data/**/*.js', 'test/**/*.js','test/**/*.json'],
+        tasks:  [ 'express:dev', 'simplemocha' ],
         options: {
           spawn: false
+        }
+      },
+      tests: {
+        files: [],
+        tasks: [ 'simplemocha' ],
+        options: {
+          interrupt: true,
         }
       }
     },
@@ -114,9 +114,8 @@ module.exports = function(grunt) {
         }
     }
   });
-  // Default task(s).
   grunt.registerTask('build', ['jshint', 'copy:build' ]);
-  grunt.registerTask('default', ['watch']);
-  grunt.registerTask('test', ['jshint', 'simplemocha' ]);
+  grunt.registerTask('default', ['express:dev', 'watch']);
+  grunt.registerTask('test', ['jshint','express:dev', 'simplemocha', 'express:dev:stop' ]);
 
 };
