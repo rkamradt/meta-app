@@ -4,9 +4,9 @@ module.exports = function(json) {
     'json': json,
     'findMetadata': function(modelName) {
       var metadata = null;
-      for(var i = 0; i < this.json[0].models.length; i++) {
-        if(modelName === this.json[0].models[i].name) {
-          metadata = this.json[0].models[i];
+      for(var i = 0; i < this.json.models.length; i++) {
+        if(modelName === this.json.models[i].name) {
+          metadata = this.json.models[i];
           break;
         }
       }

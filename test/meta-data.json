@@ -1,32 +1,30 @@
-[
-  {
-    "models": [
-      {
-        "name": "modelname1",
-        "properties": [
-          {
-            "name": "property1",
-            "deflt": "p1"
-          },
-          {
-            "name": "property2",
-            "deflt": "p2"
-          }
-        ]
-      },
-      {
-        "name": "modelname2",
-        "properties": [
-          {
-            "name": "m2property1",
-            "deflt": "m2p1"
-          },
-          {
-            "name": "m2property2",
-            "deflt": "m2p2"
-          }
-        ]
-      }
-    ]
-  }
-]
+{
+  "models": [
+    {
+      "name": "modelname1",
+      "properties": [
+        {
+          "name": "property1",
+          "deflt": "p1"
+        },
+        {
+          "name": "property2",
+          "deflt": "p2"
+        }
+      ]
+    },
+    {
+      "name": "modelname2",
+      "properties": [
+        {
+          "name": "m2property1",
+          "deflt": "m2p1"
+        },
+        {
+          "name": "m2property2",
+          "deflt": "m2p2"
+        }
+      ]
+    }
+  ]
+}
