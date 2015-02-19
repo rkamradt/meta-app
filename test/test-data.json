@@ -1,4 +1,6 @@
 {
-  "property1": "data1",
-  "property2": "data2"
+  "firstName": "Randal",
+  "lastName": "Kamradt",
+  "email": "randysr@kamradtfamily.net",
+  "password": "RjklstTJR"
 }

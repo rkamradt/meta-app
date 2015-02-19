@@ -8,9 +8,9 @@ var metadata = metadataMap(json);
 
 describe('Metadata access', function() {
   describe('Find metadata based on name', function() {
-    it('should be able to find metadata for modelname1', function() {
-      var sut = metadata.findMetadata('modelname1');
-      sut.properties.should.be.instanceof(Array).and.have.lengthOf(2);
+    it('should be able to find metadata for User', function() {
+      var sut = metadata.findMetadata('User');
+      sut.properties.should.be.instanceof(Array).and.have.lengthOf(4);
     });
     it('should be able to find metadata for modelname2', function() {
       var sut = metadata.findMetadata('modelname2');
@@ -26,11 +26,9 @@ describe('Metadata access', function() {
     });
   });
   describe('create object based on metadata', function() {
-    it('should be able to create an object based on modelname1', function() {
-      var sut = metadata.create("modelname1");
+    it('should be able to create an object based on User', function() {
+      var sut = metadata.create("User");
       sut.should.be.instanceOf(Object);
-      sut.should.have.property('property1', 'p1');
-      sut.should.have.property('property2', 'p2');
     });
     it('should be able to create an object based on modelname2', function() {
       var sut = metadata.create("modelname2");
@@ -48,20 +46,20 @@ describe('Metadata access', function() {
     });
   });
   describe('create object based on metadata and example', function() {
-    it('should be able to create an object based on modelname1 and data', function() {
-      var sut = metadata.create("modelname1", data);
+    it('should be able to create an object based on User and data', function() {
+      var sut = metadata.create("User", data);
       sut.should.be.instanceOf(Object);
-      sut.should.have.property('property1', 'data1');
-      sut.should.have.property('property2', 'data2');
+      sut.should.have.property('firstName', 'Randal');
+      sut.should.have.property('lastName', 'Kamradt');
     });
     it('should not be able to create an object based on modelname1 and data', function() {
       data.unknownProperty = "bad data";
       try {
-        sut = metadata.create("modelname1", data);
+        sut = metadata.create("User", data);
         throw "expected exception not thrown";
       } catch(e) {
         e.should.be.exactly("property unknownProperty in data not found in model");
       }
-    }); 
+    });
   });
 });

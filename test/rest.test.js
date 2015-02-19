@@ -44,15 +44,15 @@ describe('Rest API', function(){
     done(); // when we use a database, all of this will need to be asynchronous
   });
   describe('modelname1', function(){
-    it('should be able to return modelname1 with /modelname1' , function(){
+    it('should be able to return User with /User' , function(){
         var sut = rest(json);
         var endvalue = '';
-        var req = reqCreate('/modelname1', '', 'GET');
+        var req = reqCreate('/User', '', 'GET');
         var res = resCreate();
         sut(req, res, function next() {
           throw "next should not be called";
         });
-        res.message().should.equal('GET processing on model /modelname1\n');
+        res.message().should.equal('GET processing on model /User\n');
     });
     it('should be able to return modelname2 with /modelname2' , function(){
         var sut = rest(json);

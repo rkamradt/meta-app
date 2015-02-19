@@ -1,15 +1,21 @@
 {
   "models": [
     {
-      "name": "modelname1",
+      "name": "User",
       "properties": [
         {
-          "name": "property1",
-          "deflt": "p1"
+          "name": "firstName"
         },
         {
-          "name": "property2",
-          "deflt": "p2"
+          "name": "lastName"
+        },
+        {
+          "name": "email",
+          "key": true
+        },
+        {
+          "name": "password",
+          "visible": false
         }
       ]
     },
