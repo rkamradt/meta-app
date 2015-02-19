@@ -15,7 +15,7 @@ describe('Memory storage', function() {
     done();
   });
   beforeEach(function(done) {
-    sut = memorystore(); // create a memory store to test
+    sut = memorystore(metadata.findMetadata('User')); // create a memory store to test
     done();
   });
   describe('load data based from array', function() {
@@ -26,6 +26,21 @@ describe('Memory storage', function() {
         if(e) {
           throw e;
         }
+      });
+    });
+    describe('find data from store', function() {
+      it('should be able to find email from store', function() {
+        var list = []; // copy data first
+        list[0] = metadata.create("User", data);
+        sut.load(list, function(e) {
+          if(e) {
+            throw e;
+          }
+        }); // then find it
+        var result = sut.find('randysr@kamradtfamily.net');
+        result.should.be.instanceOf(Object);
+        result.should.have.property('firstName', 'Randal');
+        result.should.have.property('lastName', 'Kamradt');
       });
     });
 
