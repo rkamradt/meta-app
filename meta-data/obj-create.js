@@ -11,7 +11,7 @@ module.exports = function(json) {
         }
       }
       if(!metadata) {
-        throw "model " + modelName + " not found";
+        throw Error("model " + modelName + " not found");
       }
       return metadata;
     },
@@ -26,7 +26,7 @@ module.exports = function(json) {
           }
         }
         if(!found) {
-          throw "property " + p + " in data not found in model";
+          throw Error("property " + p + " in data not found in model");
         }
         obj[p] = data[p];
       }
@@ -37,7 +37,7 @@ module.exports = function(json) {
       for(var i = 0; i < metadata.properties.length; i++) {
         var property = metadata.properties[i];
         if(!property.name) {
-          throw "model " + model + " has nameless property";
+          throw Error("model " + model + " has nameless property");
         }
         if(property.deflt) {
           ret[property.name] = property.deflt;

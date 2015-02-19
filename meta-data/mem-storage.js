@@ -10,7 +10,6 @@ module.exports = function(m) {
     'find': function(key) {
       var property = null; // todo prefind the key
       for(var i = 0; i < metadata.properties.length; i++) {
-        console.log("found property " + metadata.properties[i].name);
         if(metadata.properties[i].key) {
           property = metadata.properties[i];
           break;

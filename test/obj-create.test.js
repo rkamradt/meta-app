@@ -19,9 +19,10 @@ describe('Metadata access', function() {
     it('should not be able to find metadata for foo', function() {
       try {
         metadata.findMetadata("foo");
-        throw "expected exception not thrown";
+        throw Error("expected exception not thrown");
       } catch(e) {
-        e.should.be.exactly("model foo not found");
+        e.should.be.instanceOf(Error);
+        e.message.should.be.exactly("model foo not found");
       }
     });
   });
@@ -39,9 +40,9 @@ describe('Metadata access', function() {
     it('should not be able to create an object based on foo', function() {
       try {
         metadata.create("foo");
-        throw "expected exception not thrown";
+        throw Error("expected exception not thrown");
       } catch(e) {
-        e.should.be.exactly("model foo not found");
+        e.should.be.instanceOf(Error).and.message.should.be.exactly("model foo not found");
       }
     });
   });
@@ -56,9 +57,10 @@ describe('Metadata access', function() {
       data.unknownProperty = "bad data";
       try {
         sut = metadata.create("User", data);
-        throw "expected exception not thrown";
+        throw Error("expected exception not thrown");
       } catch(e) {
-        e.should.be.exactly("property unknownProperty in data not found in model");
+        e.should.be.instanceOf(Error);
+        e.message.should.be.exactly("property unknownProperty in data not found in model");
       }
     });
   });
