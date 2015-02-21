@@ -28,7 +28,7 @@ describe('Rest API', function(){
       if(err) return done(err);
       var collection = db.collection('documents');
       collection.drop(function(err, result) {
-        if(err) console.log("drop: " + err);
+        if(err) console.log('drop: ' + err);
         collection = db.collection('documents');
         var tarray = [];
         tarray[0] = test;

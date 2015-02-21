@@ -16,7 +16,7 @@ module.exports = function(m) {
         }
       }
       if(!property) {
-        throw Error("no key found for metadata");
+        throw Error('no key found for metadata');
       }
       for(i = 0; i < this.data.length; i++) {
         if(this.data[i][property.name] === key) {

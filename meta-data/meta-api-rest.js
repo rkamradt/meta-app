@@ -19,19 +19,19 @@ module.exports = function(json) {
       }
     }
     if(!smodel) {
-      res.status(500).send("model " + req.url + " not found\n");
+      res.status(500).send('model ' + req.url + ' not found\n');
       return;
     }
     if(req.method === 'GET') {
-      res.status(200).send("GET processing on model " + req.url + "\n");
+      res.status(200).send('GET processing on model ' + req.url + '\n');
     } else if(req.method === 'POST') {
-      res.status(200).send("POST processing on model " + req.url + "\n");
+      res.status(200).send('POST processing on model ' + req.url + '\n');
     } else if(req.method === 'PUT') {
-      res.status(200).send("PUT processing on model " + req.url + "\n");
+      res.status(200).send('PUT processing on model ' + req.url + '\n');
     } else if(req.method === 'DELETE') {
-      res.status(200).send("DELETE processing on model " + req.url + "\n");
+      res.status(200).send('DELETE processing on model ' + req.url + '\n');
     } else {
-      res.status(500).send("unrecognized verb");
+      res.status(500).send('unrecognized verb');
       return;
     }
   };
