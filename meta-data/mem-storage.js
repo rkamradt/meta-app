@@ -1,29 +1,59 @@
 module.exports = function(m) {
   var metadata = m;
+  var keyProp = null;
+  for(var propName in metadata.properties) {
+    if(metadata.properties[propName].key) {
+      keyProp = metadata.properties[propName];
+      break;
+    }
+  }
   return {
 
     'data': [],
     'load': function(d, done) {
       this.data = d;
-      done();
+      if(done) { // allow for asynchronous calls
+        done();
+      }
     },
-    'find': function(key) {
-      var property = null; // todo prefind the key
-      for(var i = 0; i < metadata.properties.length; i++) {
-        if(metadata.properties[i].key) {
-          property = metadata.properties[i];
+    'findAll': function(done) {
+      var ret = this.data;
+      if(done) { // allow for asynchronous calls
+        done();
+      }
+      return ret;
+    },
+    'find': function(key, done) {
+      if(!keyProp) {
+        throw Error('no key found for metadata');
+      }
+      var ret = null;
+      for(var i = 0; i < this.data.length; i++) {
+        if(this.data[i][keyProp.name] === key) {
+          ret = this.data[i];
           break;
         }
       }
-      if(!property) {
+      if(done) { // allow for asynchronous calls
+        done();
+      }
+      return ret;
+    },
+    'remove': function(key, done) {
+      if(!keyProp) {
         throw Error('no key found for metadata');
       }
-      for(i = 0; i < this.data.length; i++) {
-        if(this.data[i][property.name] === key) {
-          return this.data[i];
+      var ret = null;
+      for(var i = 0; i < this.data.length; i++) {
+        if(this.data[i][keyProp.name] === key) {
+          ret = this.data.splice(i, 1)[0];
+          break;
         }
       }
-      return null;
+      if(done) { // allow for asynchronous calls
+        done();
+      }
+      return ret;
     }
   };
 };

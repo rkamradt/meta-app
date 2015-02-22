@@ -4,9 +4,9 @@ module.exports = function(json) {
     'json': json,
     'findMetadata': function(modelName) {
       var metadata = null;
-      for(var i = 0; i < this.json.models.length; i++) {
-        if(modelName === this.json.models[i].name) {
-          metadata = this.json.models[i];
+      for(var propName in this.json.models) {
+        if(modelName === this.json.models[propName].name) {
+          metadata = this.json.models[propName];
           break;
         }
       }
@@ -18,8 +18,8 @@ module.exports = function(json) {
     'apply': function(obj, data, metadata) {
       for(var p in data) {
         var found = false;
-        for(var i = 0; i < metadata.properties.length; i++) {
-          var prop = metadata.properties[i];
+        for(var propName in metadata.properties) {
+          var prop = metadata.properties[propName];
           if(p === prop.name) {
             found = true;
             break;
@@ -34,8 +34,8 @@ module.exports = function(json) {
     'create': function(modelName, data) {
       var metadata = this.findMetadata(modelName);
       var ret = {};
-      for(var i = 0; i < metadata.properties.length; i++) {
-        var property = metadata.properties[i];
+      for(var propName in metadata.properties) {
+        var property = metadata.properties[propName];
         if(!property.name) {
           throw Error('model ' + model + ' has nameless property');
         }

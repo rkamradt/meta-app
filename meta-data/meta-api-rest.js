@@ -10,8 +10,8 @@ module.exports = function(json) {
   ijson = json;
   return function(req, res, next) {
     var smodel = null;
-    for(var i = 0; i < ijson.models.length; i++) {
-      var model = ijson.models[i];
+    for(var propName in ijson.models) {
+      var model = ijson.models[propName];
       var mpath = '/' + model.name;
       if(req.url.indexOf(mpath) === 0) {
         smodel = model;
