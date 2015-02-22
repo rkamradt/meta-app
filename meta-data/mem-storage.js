@@ -10,27 +10,18 @@ module.exports = function(m) {
   return {
 
     '_data': [],
-    'load': function(d, done) {
+    'load': function(d) {
       this._data = this._data.concat(d);
-      if(done) { // allow for asynchronous calls
-        done();
-      }
     },
-    'add': function(d, done) {
+    'add': function(d) {
       this._data.push(d);
-      if(done) { // allow for asynchronous calls
-        done();
-      }
       return this._data.length;
     },
-    'findAll': function(done) {
+    'findAll': function() {
       var ret = this._data;
-      if(done) { // allow for asynchronous calls
-        done();
-      }
       return ret;
     },
-    'find': function(key, done) {
+    'find': function(key) {
       if(!keyProp) {
         throw Error('no key found for metadata');
       }
@@ -41,12 +32,9 @@ module.exports = function(m) {
           break;
         }
       }
-      if(done) { // allow for asynchronous calls
-        done();
-      }
       return ret;
     },
-    'remove': function(key, done) {
+    'remove': function(key) {
       if(!keyProp) {
         throw Error('no key found for metadata');
       }
@@ -56,9 +44,6 @@ module.exports = function(m) {
           ret = this._data.splice(i, 1)[0];
           break;
         }
-      }
-      if(done) { // allow for asynchronous calls
-        done();
       }
       return ret;
     }

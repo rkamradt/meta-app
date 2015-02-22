@@ -4,14 +4,17 @@
       "name": "User",
       "properties": [
         {
-          "name": "firstName"
+          "name": "firstName",
+          "visible": true
         },
         {
-          "name": "lastName"
+          "name": "lastName",
+          "visible": true
         },
         {
           "name": "email",
-          "key": true
+          "key": true,
+          "visible": true
         },
         {
           "name": "password",

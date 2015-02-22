@@ -19,7 +19,6 @@ describe('Memory storage', function() {
   var json;
   var data;
   var metadata;
-  var sut;
   before(function(done) {
     json = JSON.parse(fs.readFileSync('test/meta-data.json'));
     data = JSON.parse(fs.readFileSync('test/test-data.json'));
@@ -38,7 +37,7 @@ describe('Memory storage', function() {
         var sut = memorystore(metadata.findMetadata('User')); // create a memory store to test
         var newObj = metadata.create("User");
         newObj.email='test@test.com';
-        newObj.firstName='test';
+        newObj.firstName='Test';
         newObj.lastName='McTest';
         var len = sut.add(newObj);
         len.should.be.exactly(1);
