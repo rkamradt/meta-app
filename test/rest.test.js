@@ -23,6 +23,7 @@ var url = 'mongodb://localhost:27017/myproject';
 describe('Rest API', function(){
   var self = this;
   beforeEach(function(done) {
+    /*
     // Use connect method to connect to the Server
     MongoClient.connect(url, function(err, db) {
       if(err) return done(err);
@@ -39,6 +40,8 @@ describe('Rest API', function(){
         });
       });
     });
+    */
+    done();
   });
   afterEach(function(done) {
     done(); // when we use a database, all of this will need to be asynchronous
