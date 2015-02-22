@@ -9,15 +9,22 @@ module.exports = function(m) {
   }
   return {
 
-    'data': [],
+    '_data': [],
     'load': function(d, done) {
-      this.data = d;
+      this._data = this._data.concat(d);
       if(done) { // allow for asynchronous calls
         done();
       }
     },
+    'add': function(d, done) {
+      this._data.push(d);
+      if(done) { // allow for asynchronous calls
+        done();
+      }
+      return this._data.length;
+    },
     'findAll': function(done) {
-      var ret = this.data;
+      var ret = this._data;
       if(done) { // allow for asynchronous calls
         done();
       }
@@ -28,9 +35,9 @@ module.exports = function(m) {
         throw Error('no key found for metadata');
       }
       var ret = null;
-      for(var i = 0; i < this.data.length; i++) {
-        if(this.data[i][keyProp.name] === key) {
-          ret = this.data[i];
+      for(var i = 0; i < this._data.length; i++) {
+        if(this._data[i][keyProp.name] === key) {
+          ret = this._data[i];
           break;
         }
       }
@@ -44,9 +51,9 @@ module.exports = function(m) {
         throw Error('no key found for metadata');
       }
       var ret = null;
-      for(var i = 0; i < this.data.length; i++) {
-        if(this.data[i][keyProp.name] === key) {
-          ret = this.data.splice(i, 1)[0];
+      for(var i = 0; i < this._data.length; i++) {
+        if(this._data[i][keyProp.name] === key) {
+          ret = this._data.splice(i, 1)[0];
           break;
         }
       }

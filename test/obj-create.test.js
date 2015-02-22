@@ -49,15 +49,15 @@ describe('Metadata access', function() {
   });
   describe('create object based on metadata and example', function() {
     it('should be able to create an object based on User and data', function() {
-      var sut = metadata.create('User', data);
+      var sut = metadata.create('User', data[0]);
       sut.should.be.instanceOf(Object);
       sut.should.have.property('firstName', 'Randal');
       sut.should.have.property('lastName', 'Kamradt');
     });
     it('should not be able to create an object based on modelname1 and data', function() {
-      data.unknownProperty = 'bad data';
+      data[0].unknownProperty = 'bad data';
       try {
-        sut = metadata.create('User', data);
+        sut = metadata.create('User', data[0]);
         throw Error('expected exception not thrown');
       } catch(e) {
         e.should.be.instanceOf(Error);
