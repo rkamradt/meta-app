@@ -3,16 +3,12 @@ var fs = require('fs');
 var metadataMap = require('../meta-data/obj-create.js');
 var memorystore = require('../meta-data/mem-storage.js');
 
-var loadFromData = function(metadata, data, sut) {
+var loadFromData = function(metadata, data, sut, done) {
   var list = [];
   for(var d in data) {
     var len = list.push(metadata.create("User", data[d]));
   }
-  sut.load(list, function(e) {
-    if(e) {
-      throw e;
-    }
-  });
+  sut.load(list, done);
 };
 
 describe('Memory storage', function() {
@@ -26,63 +22,83 @@ describe('Memory storage', function() {
     done();
   });
   describe('load data based from array', function() {
-    it('should be able to store data from an array', function() {
+    it('should be able to store data from an array', function(done) {
       var sut = memorystore(metadata.findMetadata('User')); // create a memory store to test
-      var list = loadFromData(metadata, data, sut);
-      var result = sut.findAll();
-      result.should.be.instanceOf(Array).and.be.length(2);
+      var list = loadFromData(metadata, data, sut, function(err, result) {
+        sut.findAll(function(err, result) {
+          result.should.be.instanceOf(Array).and.be.length(2);
+          done();
+        });
+      });
     });
     describe('add data to store', function() {
-      it('should be able to add to store', function() {
+      it('should be able to add to store', function(done) {
         var sut = memorystore(metadata.findMetadata('User')); // create a memory store to test
         var newObj = metadata.create("User");
         newObj.email='test@test.com';
         newObj.firstName='Test';
         newObj.lastName='McTest';
-        var len = sut.add(newObj);
-        len.should.be.exactly(1);
-        var result = sut.find('test@test.com');
-        result.should.be.instanceOf(Object);
-        result.should.have.property('firstName', newObj.firstName);
-        result.should.have.property('lastName', newObj.lastName);
+        sut.add(newObj, function(err, result) {
+          result.should.be.exactly(1);
+          sut.find('test@test.com', function(err, result) {
+            result.should.be.instanceOf(Object);
+            result.should.have.property('firstName', newObj.firstName);
+            result.should.have.property('lastName', newObj.lastName);
+            done();
+          });
+        });
       });
     });
     describe('find data from store', function() {
-      it('should be able to find email from store', function() {
+      it('should be able to find email from store', function(done) {
         var sut = memorystore(metadata.findMetadata('User')); // create a memory store to test
-        var list = loadFromData(metadata, data, sut);
-        var result = sut.find('randysr@kamradtfamily.net');
-        result.should.be.instanceOf(Object);
-        result.should.have.property('firstName', 'Randal');
-        result.should.have.property('lastName', 'Kamradt');
+        var list = loadFromData(metadata, data, sut, function(err, result) {
+          sut.find('randysr@kamradtfamily.net', function(err, result) {
+            result.should.be.instanceOf(Object);
+            result.should.have.property('firstName', 'Randal');
+            result.should.have.property('lastName', 'Kamradt');
+            done();
+          });
+        });
       });
     });
     describe('retrieve all data from store', function() {
-      it('should be able to retrieve all data from store', function() {
+      it('should be able to retrieve all data from store', function(done) {
         var sut = memorystore(metadata.findMetadata('User')); // create a memory store to test
-        var list = loadFromData(metadata, data, sut);
-        var result = sut.findAll();
-        result.should.be.instanceOf(Array).and.be.length(2);
+        var list = loadFromData(metadata, data, sut, function(err, result) {
+          sut.findAll(function(err, result) {
+            result.should.be.instanceOf(Array).and.be.length(2);
+            done();
+          });
+        });
       });
     });
     describe('remove data from store', function() {
-      it('should be able to remove data from store', function() {
+      it('should be able to remove data from store', function(done) {
         var sut = memorystore(metadata.findMetadata('User')); // create a memory store to test
-        var list = loadFromData(metadata, data, sut);
-        var result = sut.remove('randysr@kamradtfamily.net');
-        result.should.be.instanceOf(Object);
-        result.should.have.property('firstName', 'Randal');
-        result.should.have.property('lastName', 'Kamradt');
-        result = sut.findAll();
-        result.should.be.instanceOf(Array).and.be.length(1);
+        var list = loadFromData(metadata, data, sut, function(err, result) {
+          sut.remove('randysr@kamradtfamily.net', function(err, result) {
+            result.should.be.instanceOf(Object);
+            result.should.have.property('firstName', 'Randal');
+            result.should.have.property('lastName', 'Kamradt');
+            sut.findAll(function(err, result) {
+              result.should.be.instanceOf(Array).and.be.length(1);
+              done();
+            });
+          });
+        });
       });
-      it('should return null if data to be removed doesnt exist', function() {
+      it('should return null if data to be removed doesnt exist', function(done) {
         var sut = memorystore(metadata.findMetadata('User')); // create a memory store to test
-        var list = loadFromData(metadata, data, sut);
-        var result = sut.remove('bad@bad.com');
-        should.not.exist(result);
-        result = sut.findAll();
-        result.should.be.instanceOf(Array).and.be.length(2);
+        var list = loadFromData(metadata, data, sut, function(err, result) {
+          sut.remove('bad@bad.com', function(err, result) {
+            should.not.exist(result);
+            sut.findAll(function(err, result) {
+              result.should.be.instanceOf(Array).and.be.length(2);
+              done();
+            });
+          });
+        });
       });
     });
   });

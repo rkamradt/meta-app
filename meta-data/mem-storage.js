@@ -10,42 +10,46 @@ module.exports = function(m) {
   return {
 
     '_data': [],
-    'load': function(d) {
+    'load': function(d, done) {
       this._data = this._data.concat(d);
+      done();
     },
-    'add': function(d) {
+    'add': function(d, done) {
       this._data.push(d);
-      return this._data.length;
+      var ret = this._data.length;
+      done('', ret);
     },
-    'findAll': function() {
-      var ret = this._data;
-      return ret;
+    'findAll': function(done) {
+      var ret = this._data.concat([]); // make a shallow copy
+      done('', ret);
     },
-    'find': function(key) {
+    'find': function(key, done) {
       if(!keyProp) {
-        throw Error('no key found for metadata');
+        done('no key found for metadata');
+        return;
       }
-      var ret = null;
+      var ret = null; // if not found return null
       for(var i = 0; i < this._data.length; i++) {
         if(this._data[i][keyProp.name] === key) {
           ret = this._data[i];
           break;
         }
       }
-      return ret;
+      done('', ret);
     },
-    'remove': function(key) {
+    'remove': function(key, done) {
       if(!keyProp) {
-        throw Error('no key found for metadata');
+        done('no key found for metadata');
+        return;
       }
-      var ret = null;
+      var ret = null; // if not found, do nothing and return null
       for(var i = 0; i < this._data.length; i++) {
         if(this._data[i][keyProp.name] === key) {
           ret = this._data.splice(i, 1)[0];
           break;
         }
       }
-      return ret;
+      done('', ret);
     }
   };
 };
