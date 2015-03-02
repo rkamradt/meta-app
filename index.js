@@ -7,8 +7,12 @@ var methodOverride = require('method-override');
 var router = require('./meta-data/meta-api-rest');
 var morgan = require('morgan');
 var fs = require('fs');
+var filestore = require('./meta-data/file-storage.js');
+var metadataMap = require('./meta-data/obj-create.js');
+
 // todo parameterize this to allow production/test alternatives
 var json = JSON.parse(fs.readFileSync('test/meta-data.json'));
+var metadata = metadataMap(json);
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -16,8 +20,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(morgan("dev", { format: 'dev', immediate: true }));
-app.use(router(json));
-app.use('/', express.static(path.join(__dirname, 'dist')));
+router(app, json, filestore(metadata.findMetadata('User'),'testfile.json'));
 
 http.createServer(app).listen(9999, function() {
     console.log('Server up: http://localhost:' + 9999);

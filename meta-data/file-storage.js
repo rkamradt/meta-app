@@ -1,26 +1,24 @@
 var fs = require('fs');
 
 module.exports = function(m, fileName) {
-  var metadata = m;
   var keyProp = null;
-  for(var propName in metadata.properties) {
-    if(metadata.properties[propName].key) {
-      keyProp = metadata.properties[propName];
+  for(var propName in m.properties) {
+    if(m.properties[propName].key) {
+      keyProp = m.properties[propName];
       break;
     }
   }
-  var fileStore = fileName;
-  return {
+  var ret = {
 
     '_data': [],
     '_readData': function(done) {
       var self = this;
-      fs.exists(fileStore, function(exists) {
+      fs.exists(this._fileStore, function(exists) {
         if(!exists) {
           self._data = []; // no file; assume empty
           done();
         } else {
-          fs.readFile(fileStore, function(err, data) {
+          fs.readFile(self._fileStore, function(err, data) {
             if(err) {
               done(err);
             } else {
@@ -33,7 +31,7 @@ module.exports = function(m, fileName) {
     },
     '_writeData': function(done, result) {
       var data = JSON.stringify(this._data);
-      fs.writeFile(fileStore, data, function(err) {
+      fs.writeFile(this._fileStore, data, function(err) {
         if(err) {
           done(err);
         } else {
@@ -73,7 +71,7 @@ module.exports = function(m, fileName) {
       });
     },
     'find': function(key, done) {
-      if(!keyProp) {
+      if(!this._key) {
         done('no key found for metadata');
         return;
       }
@@ -84,7 +82,7 @@ module.exports = function(m, fileName) {
         }
         var ret = null; // if not found return null
         for(var i = 0; i < self._data.length; i++) {
-          if(self._data[i][keyProp.name] === key) {
+          if(self._data[i][self._key.name] === key) {
             ret = self._data[i];
             break;
           }
@@ -93,7 +91,7 @@ module.exports = function(m, fileName) {
       });
     },
     'remove': function(key, done) {
-      if(!keyProp) {
+      if(!this._key) {
         done('no key found for metadata');
         return;
       }
@@ -104,7 +102,7 @@ module.exports = function(m, fileName) {
         }
         var ret = null; // if not found, do nothing and return null
         for(var i = 0; i < self._data.length; i++) {
-          if(self._data[i][keyProp.name] === key) {
+          if(self._data[i][self._key.name] === key) {
             ret = self._data.splice(i, 1)[0];
             break;
           }
@@ -113,4 +111,8 @@ module.exports = function(m, fileName) {
       });
     }
   };
+  ret._key = keyProp;
+  ret._fileStore = fileName;
+  return ret;
+
 };
