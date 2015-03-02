@@ -7,7 +7,7 @@ var morgan = require('morgan');
 var fs = require('fs');
 var filestore = require('../meta-data/file-storage');
 var metadataMap = require('../meta-data/obj-create');
-var router = require('../meta-data/meta-api-rest');
+var router = require('../meta-data/file-rest');
 
 
 describe('Rest API', function(){
