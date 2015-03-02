@@ -7,7 +7,7 @@ var objCreate = require('../meta-data/obj-create.js')();
 
 var json = JSON.parse(fs.readFileSync('test/meta-data.json'));
 
-var test = JSON.parse(fs.readFileSync('test/test-data.json'));
+var testData = JSON.parse(fs.readFileSync('test/test-data.json'));
 // REST methods:
 // GET returns a list with optional filters
 // GET :id returns a single document
@@ -32,7 +32,7 @@ describe('Rest API', function(){
         if(err) console.log('drop: ' + err);
         collection = db.collection('documents');
         var tarray = [];
-        tarray[0] = test;
+        tarray[0] = testData;
         collection.insert(tarray, function(err, result) {
           if(err) return done(err);
           db.close();

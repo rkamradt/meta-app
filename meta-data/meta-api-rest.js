@@ -1,4 +1,3 @@
-var ijson;
 // REST methods:
 // GET returns a list with optional filters
 // GET :id returns a single document
@@ -7,7 +6,7 @@ var ijson;
 // DELETE :id deletes a single document
 
 module.exports = function(json) {
-  ijson = json;
+  var ijson = json;
   return function(req, res, next) {
     var smodel = null;
     for(var propName in ijson.models) {

@@ -37,7 +37,7 @@ module.exports = function(m, fileName) {
         if(err) {
           done(err);
         } else {
-          done('', result);
+          done(null, result);
         }
       });
     },

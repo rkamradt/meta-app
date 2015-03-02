@@ -17,11 +17,11 @@ module.exports = function(m) {
     'add': function(d, done) {
       this._data.push(d);
       var ret = this._data.length;
-      done('', ret);
+      done(null, ret);
     },
     'findAll': function(done) {
       var ret = this._data.concat([]); // make a shallow copy
-      done('', ret);
+      done(null, ret);
     },
     'find': function(key, done) {
       if(!keyProp) {
@@ -35,7 +35,7 @@ module.exports = function(m) {
           break;
         }
       }
-      done('', ret);
+      done(null, ret);
     },
     'remove': function(key, done) {
       if(!keyProp) {
@@ -49,7 +49,7 @@ module.exports = function(m) {
           break;
         }
       }
-      done('', ret);
+      done(null, ret);
     }
   };
 };

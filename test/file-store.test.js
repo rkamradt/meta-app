@@ -6,7 +6,7 @@ var filestore = require('../meta-data/file-storage.js');
 var loadFromData = function(metadata, data, sut, done) {
   var list = [];
   for(var d in data) {
-    var len = list.push(metadata.create("User", data[d]));
+    list.push(metadata.create('User', data[d]));
   }
   sut.load(list, done);
 };
@@ -23,7 +23,6 @@ describe('File storage', function() {
     done();
   });
   beforeEach(function(done) {
-    console.log('beforeEach called');
     if(fs.existsSync(testFileName)) {
       fs.unlinkSync(testFileName);
     }
@@ -32,8 +31,10 @@ describe('File storage', function() {
   describe('load data based from array', function() {
     it('should be able to store data from an array', function(done) {
       var sut = filestore(metadata.findMetadata('User'),testFileName); // create a file store to test
-      var list = loadFromData(metadata, data, sut, function(err, result) {
+      var list = loadFromData(metadata, data, sut, function(err) {
+        should.not.exist(err);
         sut.findAll(function(err, result) {
+          should.not.exist(err);
           result.should.be.instanceOf(Array).and.be.length(2);
           done();
         });
@@ -47,8 +48,10 @@ describe('File storage', function() {
         newObj.firstName='Test';
         newObj.lastName='McTest';
         sut.add(newObj, function(err, result) {
+          should.not.exist(err);
           result.should.be.exactly(1);
           sut.find('test@test.com', function(err, result) {
+            should.not.exist(err);
             result.should.be.instanceOf(Object);
             result.should.have.property('firstName', newObj.firstName);
             result.should.have.property('lastName', newObj.lastName);
@@ -60,8 +63,10 @@ describe('File storage', function() {
     describe('find data from store', function() {
       it('should be able to find email from store', function(done) {
         var sut = filestore(metadata.findMetadata('User'),testFileName); // create a file store to test
-        var list = loadFromData(metadata, data, sut, function(err, result) {
+        loadFromData(metadata, data, sut, function(err) {
+          should.not.exist(err);
           sut.find('randysr@kamradtfamily.net', function(err, result) {
+            should.not.exist(err);
             result.should.be.instanceOf(Object);
             result.should.have.property('firstName', 'Randal');
             result.should.have.property('lastName', 'Kamradt');
@@ -73,8 +78,10 @@ describe('File storage', function() {
     describe('retrieve all data from store', function() {
       it('should be able to retrieve all data from store', function(done) {
         var sut = filestore(metadata.findMetadata('User'),testFileName); // create a file store to test
-        var list = loadFromData(metadata, data, sut, function(err, result) {
+        loadFromData(metadata, data, sut, function(err) {
+          should.not.exist(err);
           sut.findAll(function(err, result) {
+            should.not.exist(err);
             result.should.be.instanceOf(Array).and.be.length(2);
             done();
           });
@@ -84,8 +91,10 @@ describe('File storage', function() {
     describe('remove data from store', function() {
       it('should be able to remove data from store', function(done) {
         var sut = filestore(metadata.findMetadata('User'),testFileName); // create a file store to test
-        var list = loadFromData(metadata, data, sut, function(err, result) {
+        loadFromData(metadata, data, sut, function(err) {
+          should.not.exist(err);
           sut.remove('randysr@kamradtfamily.net', function(err, result) {
+            should.not.exist(err);
             result.should.be.instanceOf(Object);
             result.should.have.property('firstName', 'Randal');
             result.should.have.property('lastName', 'Kamradt');
@@ -98,10 +107,13 @@ describe('File storage', function() {
       });
       it('should return null if data to be removed doesnt exist', function(done) {
         var sut = filestore(metadata.findMetadata('User'),testFileName); // create a file store to test
-        var list = loadFromData(metadata, data, sut, function(err, result) {
+        loadFromData(metadata, data, sut, function(err) {
+          should.not.exist(err);
           sut.remove('bad@bad.com', function(err, result) {
+            should.not.exist(err);
             should.not.exist(result);
             sut.findAll(function(err, result) {
+              should.not.exist(err);
               result.should.be.instanceOf(Array).and.be.length(2);
               done();
             });

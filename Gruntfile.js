@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 
         // Called when the spawned server throws errors
         fallback: function() {
-          console.log("opps");
+          console.log('opps');
         },
 
         // Override node env's PORT
@@ -36,7 +36,7 @@ module.exports = function(grunt) {
         delay: 0,
 
         // Regular expression that matches server output to indicate it is "running"
-        output: ".+",
+        output: '.+',
 
         // Set --debug
         debug: false
@@ -52,13 +52,12 @@ module.exports = function(grunt) {
           curly: true,
           eqeqeq: true,
           eqnull: true,
-          browser: true,
-          globals: {
-            jQuery: true
-          },
+          node: true,
+          mocha: true,
+          camelcase: false
         },
         files: {
-          src: ['Gruntfile.js', 'index.js', 'meta-data/**/*.js', 'test/req-create.js', 'test/res-create.js']
+          src: ['Gruntfile.js', 'index.js', 'meta-data/**/*.js', 'test/**/*.js']
         }
     },
     clean: {
