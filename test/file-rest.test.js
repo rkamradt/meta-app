@@ -6,8 +6,8 @@ var methodOverride = require('method-override');
 var morgan = require('morgan');
 var fs = require('fs');
 var filestore = require('../meta-data/file-storage');
-var metadataMap = require('../meta-data/obj-create');
-var router = require('../meta-data/file-rest');
+var metadataMap = require('../meta-data/meta-create');
+var router = require('../meta-data/meta-rest');
 
 
 describe('Rest API', function(){

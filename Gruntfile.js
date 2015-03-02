@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   grunt.loadNpmTasks('grunt-simple-mocha');
-  // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
@@ -14,29 +13,18 @@ module.exports = function(grunt) {
           camelcase: false
         },
         files: {
-          src: ['Gruntfile.js', 'index.js', 'meta-data/**/*.js', 'test/**/*.js']
+          src: ['Gruntfile.js', 'meta-data/**/*.js', 'test/**/*.js']
         }
     },
     clean: {
-      build: {
-        src: [ 'dist' ]
-      },
       all: {
         src: ['node_modules']
       }
     },
-    copy: {
-        build: {
-          expand: true,
-          cwd: 'static/',
-          src: '**',
-          dest: 'dist/',
-        }
-    },
     watch: {
       tests: {
         files:  [ 'index.js', 'meta-data/**/*.js', 'test/**/*.js','test/**/*.json'],
-        tasks:  [ 'simplemocha' ],
+        tasks:  [ 'jshint', 'simplemocha' ],
         options: {
           spawn: false
         }
@@ -56,7 +44,6 @@ module.exports = function(grunt) {
         }
     }
   });
-  grunt.registerTask('build', ['jshint', 'copy:build' ]);
   grunt.registerTask('default', ['watch']);
   grunt.registerTask('test', ['jshint','simplemocha' ]);
 

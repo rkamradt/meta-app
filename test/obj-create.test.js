@@ -1,6 +1,6 @@
 var should = require('should');
 var fs = require('fs');
-var metadataMap = require('../meta-data/obj-create.js');
+var metadataMap = require('../meta-data/meta-create.js');
 
 var json = JSON.parse(fs.readFileSync('test/meta-data.json'));
 var data = JSON.parse(fs.readFileSync('test/test-data.json'));

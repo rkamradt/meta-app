@@ -1,6 +1,6 @@
 var should = require('should');
 var fs = require('fs');
-var metadataMap = require('../meta-data/obj-create.js');
+var metadataMap = require('../meta-data/meta-create.js');
 var memorystore = require('../meta-data/mem-storage.js');
 
 var loadFromData = function(metadata, data, sut, done) {

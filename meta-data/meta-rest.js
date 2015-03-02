@@ -28,7 +28,6 @@ var createRoutes = function(app, model, store) {
   app.get('/' + model.name + '/:id', function(req, res) {
     store.find(req.params.id, function(err, result) {
       if(err) {
-        console.log('in get err = ' + err);
         res.status(500).send(err);
       } else {
         if(!result) {
