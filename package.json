@@ -1,10 +1,8 @@
 {
   "name": "meta-app",
   "version": "0.0.1",
-  "description": "A metadata based App Builder",
-  "main": "index.js",
+  "description": "A metadata based app builder",
   "scripts": {
-    "start": "node index.js",
     "test": "grunt test"
   },
   "repository": {
@@ -21,7 +19,6 @@
     "body-parser": "^1.11.0",
     "express": "^4.11.2",
     "method-override": "^2.3.1",
-    "mongodb": "^1.4.30",
     "morgan": "^1.5.1"
   },
   "devDependencies": {
@@ -29,9 +26,7 @@
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-copy": "^0.5.0",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-uglify": "^0.5.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-express-server": "^0.4.19",
     "grunt-simple-mocha": "^0.4.0",
     "jshint": "^2.5.1",
     "load-grunt-tasks": "^0.5.0",
