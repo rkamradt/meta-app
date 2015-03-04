@@ -8,8 +8,9 @@ module.exports = function(m, fileName) {
       break;
     }
   }
-  var ret = {
-
+  return {
+    '_key': keyProp,
+    '_fileStore': fileName,
     '_data': [],
     '_readData': function(done) {
       var self = this;
@@ -111,8 +112,4 @@ module.exports = function(m, fileName) {
       });
     }
   };
-  ret._key = keyProp;
-  ret._fileStore = fileName;
-  return ret;
-
 };
