@@ -18,7 +18,7 @@ describe('Mongo storage', function() {
   var json;
   var data;
   var metadata;
-  var testFileName = 'testfile.json';
+  var collectionName = 'user';
   before(function(done) {
     json = JSON.parse(fs.readFileSync('test/meta-data.json'));
     data = JSON.parse(fs.readFileSync('test/test-data.json'));
@@ -31,12 +31,12 @@ describe('Mongo storage', function() {
         done(err);
         return;
       }
-      var collection = db.collection('documents');
+      var collection = db.collection(collectionName);
       collection.drop(function(err, result) {
         if(err) {
           console.log("drop: " + err);
         }
-        collection = db.collection('documents');
+        collection = db.collection(collectionName);
         db.close();
         done();
       });
@@ -44,7 +44,7 @@ describe('Mongo storage', function() {
   });
   describe('load data based from array', function() {
     it('should be able to store data from an array', function(done) {
-      var sut = mongostore(metadata.findMetadata('User'),testFileName); // create a file store to test
+      var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
       var list = loadFromData(metadata, data, sut, function(err) {
         should.not.exist(err);
         sut.findAll(function(err, result) {
@@ -56,7 +56,7 @@ describe('Mongo storage', function() {
     });
     describe('add data to store', function() {
       it('should be able to add to store', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),testFileName); // create a file store to test
+        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
         var newObj = metadata.create("User");
         newObj.email='test@test.com';
         newObj.firstName='Test';
@@ -76,7 +76,7 @@ describe('Mongo storage', function() {
     });
     describe('find data from store', function() {
       it('should be able to find email from store', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),testFileName); // create a file store to test
+        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
         loadFromData(metadata, data, sut, function(err) {
           should.not.exist(err);
           sut.find('randysr@kamradtfamily.net', function(err, result) {
@@ -91,7 +91,7 @@ describe('Mongo storage', function() {
     });
     describe('retrieve all data from store', function() {
       it('should be able to retrieve all data from store', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),testFileName); // create a file store to test
+        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
         loadFromData(metadata, data, sut, function(err) {
           should.not.exist(err);
           sut.findAll(function(err, result) {
@@ -104,7 +104,7 @@ describe('Mongo storage', function() {
     });
     describe('remove data from store', function() {
       it('should be able to remove data from store', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),testFileName); // create a file store to test
+        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
         loadFromData(metadata, data, sut, function(err) {
           should.not.exist(err);
           sut.remove('randysr@kamradtfamily.net', function(err, result) {
@@ -120,7 +120,7 @@ describe('Mongo storage', function() {
         });
       });
       it('should return null if data to be removed doesnt exist', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),testFileName); // create a file store to test
+        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
         loadFromData(metadata, data, sut, function(err) {
           should.not.exist(err);
           sut.remove('bad@bad.com', function(err, result) {

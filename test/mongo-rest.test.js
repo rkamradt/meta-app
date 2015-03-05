@@ -3,12 +3,13 @@ var request = require('supertest');
 var express = require('express');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var morgan = require('morgan');
 var fs = require('fs');
-var filestore = require('../meta-data/mongo-storage');
+var morgan = require('morgan');
+var mongostore = require('../meta-data/mongo-storage');
 var metadataMap = require('../meta-data/meta-create');
 var router = require('../meta-data/meta-rest');
 
+var url = 'mongodb://localhost:27017/myproject';
 
 describe('Rest API', function(){
   var app;
@@ -24,7 +25,7 @@ describe('Rest API', function(){
     app.use(bodyParser.json());
     app.use(methodOverride());
     app.use(morgan("dev", { format: 'dev', immediate: true }));
-    router(app, json, filestore(metadata.findMetadata('User'),'testfile.json'));
+    router(app, json, mongostore(metadata.findMetadata('User'), url, 'user'));
     done();
   });
   it('should be able to insert a new User', function(done) {
@@ -49,7 +50,7 @@ describe('Rest API', function(){
     request(app)
       .get('/User/randysr@kamradtfamily.net')
       .expect(200) //Status code
-//      .expect('Content-Type', /json/)
+      .expect('Content-Type', /json/)
       .end(function(err,res) {
         if (err) {
           throw err;

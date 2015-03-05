@@ -1,9 +1,8 @@
 var fs = require('fs');
 var MongoClient = require('mongodb').MongoClient;
 
-var url = 'mongodb://localhost:27017/myproject';
 
-module.exports = function(m, collectionName) {
+module.exports = function(m, url, collectionName) {
   var keyProp = null;
   for(var propName in m.properties) {
     if(m.properties[propName].key) {
@@ -16,21 +15,22 @@ module.exports = function(m, collectionName) {
     '_collectionName': collectionName,
     '_db': null,
     '_collection': null,
-    '_readCollection': function(done) {
+    '_url': url,
+    '_getCollection': function(done) {
       var self = this;
-      MongoClient.connect(url, function(err, db) {
+      MongoClient.connect(this._url, function(err, db) {
         if(err) {
           done(err);
           return;
         }
         self._db = db;
-        self._collection = db.collection('documents');
+        self._collection = db.collection(self._collectionName);
         done();
       });
     },
     'load': function(d, done) {
       var self = this;
-      this._readCollection(function(err) {
+      this._getCollection(function(err) {
         if(err) {
           done(err);
         }
@@ -46,7 +46,7 @@ module.exports = function(m, collectionName) {
     },
     'add': function(d, done) {
       var self = this;
-      this._readCollection(function(err) {
+      this._getCollection(function(err) {
         if(err) {
           done(err);
         }
@@ -64,7 +64,7 @@ module.exports = function(m, collectionName) {
     },
     'findAll': function(done) {
       var self = this;
-      this._readCollection(function(err) {
+      this._getCollection(function(err) {
         if(err) {
           done(err);
         }
@@ -84,7 +84,7 @@ module.exports = function(m, collectionName) {
         return;
       }
       var self = this;
-      this._readCollection(function(err) {
+      this._getCollection(function(err) {
         if(err) {
           done(err);
         }
@@ -107,7 +107,7 @@ module.exports = function(m, collectionName) {
         return;
       }
       var self = this;
-      this._readCollection(function(err) {
+      this._getCollection(function(err) {
         if(err) {
           done(err);
         }
