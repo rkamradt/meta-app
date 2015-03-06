@@ -61,4 +61,34 @@ describe('Rest API', function(){
         done();
     });
   });
+  it('should be able to find the metadata for User', function(done) {
+    request(app)
+      .get('/metadata/User')
+      .expect(200) //Status code
+//      .expect('Content-Type', /json/)
+      .end(function(err,res) {
+        if (err) {
+          throw err;
+        }
+        res.body.should.be.instanceOf(Object);
+        res.body.should.have.property('name', 'User');
+        done();
+    });
+  });
+  it('should be able to find all metadata', function(done) {
+    request(app)
+      .get('/metadata')
+      .expect(200) //Status code
+      .expect('Content-Type', /json/)
+      .end(function(err,res) {
+        if (err) {
+          throw err;
+        }
+        res.body.should.be.instanceOf(Object);
+        res.body.should.have.property('models');
+        res.body.models.should.be.instanceOf(Array);
+        res.body.models.should.have.length(2);
+        done();
+    });
+  });
 });

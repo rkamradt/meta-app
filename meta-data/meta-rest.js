@@ -98,4 +98,23 @@ module.exports = function(app, json, store) {
     createRoutes(app, json.models[modelName], store);
 
   }
+  app.get('/metadata', function(req, res) {
+    res.status(200).type('json').send(JSON.stringify(json));
+    res.end();
+  });
+  app.get('/metadata/:id', function(req, res) {
+    var model;
+    for(var modelName in json.models) {
+      if(json.models[modelName].name === req.params.id) {
+        model = json.models[modelName];
+        break;
+      }
+    }
+    if(!model) {
+      res.status(404).type('json');
+    } else {
+      res.status(200).type('json').send(JSON.stringify(model));
+    }
+    res.end();
+  });
 };
