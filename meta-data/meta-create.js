@@ -1,7 +1,16 @@
-
+/**
+ * An API for dealing with object manipulation
+ * @param  {Object} json The data definition
+ * @return {Object}      The API object
+ */
 module.exports = function(json) {
   return {
     'json': json,
+    /**
+     * Find a model with a given name
+     * @param  {String} modelName the model name
+     * @return {Object}           the Model
+     */
     'findMetadata': function(modelName) {
       var metadata = null;
       for(var propName in this.json.models) {
@@ -15,6 +24,12 @@ module.exports = function(json) {
       }
       return metadata;
     },
+    /**
+     * Apply data values to an object
+     * @param  {Object} obj      The Object to update
+     * @param  {Object} data     The data to apply
+     * @param  {Object} metadata The meta-data
+     */
     'apply': function(obj, data, metadata) {
       for(var p in data) {
         var found = false;
@@ -31,6 +46,12 @@ module.exports = function(json) {
         obj[p] = data[p];
       }
     },
+    /**
+     * Create a new data object that conforms to the data defintion
+     * @param  {String} modelName The model to use
+     * @param  {Object} data      The data to optionally apply
+     * @return {Object}           The new object
+     */
     'create': function(modelName, data) {
       var metadata = this.findMetadata(modelName);
       var ret = {};

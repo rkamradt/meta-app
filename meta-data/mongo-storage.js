@@ -1,7 +1,13 @@
 var fs = require('fs');
 var MongoClient = require('mongodb').MongoClient;
 
-
+/**
+ * A store API backed by mongo database
+ * @param  {Object} m              The model description
+ * @param  {String} url            The Mongo URL
+ * @param  {String} collectionName The Mongo Collection
+ * @return {Object}                The API Object
+ */
 module.exports = function(m, url, collectionName) {
   var keyProp = null;
   for(var propName in m.properties) {
@@ -28,6 +34,11 @@ module.exports = function(m, url, collectionName) {
         done();
       });
     },
+    /**
+     * load an array of data into a store
+     * @param  {Array}   d    The data to load
+     * @param  {Function} done The callback when done
+     */
     'load': function(d, done) {
       var self = this;
       this._getCollection(function(err) {
@@ -44,6 +55,11 @@ module.exports = function(m, url, collectionName) {
         });
       });
     },
+    /**
+     * add an item to the store
+     * @param  {Object}   d    The item to store
+     * @param  {Function} done The callback when done
+     */
     'add': function(d, done) {
       var self = this;
       this._getCollection(function(err) {
@@ -62,6 +78,10 @@ module.exports = function(m, url, collectionName) {
         });
       });
     },
+    /**
+     * return the entire store as an Array
+     * @param  {Function} done The callback when done
+     */
     'findAll': function(done) {
       var self = this;
       this._getCollection(function(err) {
@@ -78,6 +98,11 @@ module.exports = function(m, url, collectionName) {
         });
       });
     },
+    /**
+     * return an item by id
+     * @param  {String}   key  The key value
+     * @param  {Function} done The callback when done
+     */
     'find': function(key, done) {
       if(!this._key) {
         done('no key found for metadata');
@@ -101,6 +126,11 @@ module.exports = function(m, url, collectionName) {
         });
       });
     },
+    /**
+     * Remove an item by key
+     * @param  {String}   key  The key value
+     * @param  {Function} done The callback when done
+     */
     'remove': function(key, done) {
       if(!this._key) {
         done('no key found for metadata');

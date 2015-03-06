@@ -4,7 +4,14 @@
 // POST :id {doc} updates a single document
 // PUT {doc} adds a single document
 // DELETE :id deletes a single document
-
+/**
+ * An internal function that creates a route for
+ * a single model
+ *
+ * @param {Object} app   The Express Object
+ * @param {Object} model basic JSON object that describes the model
+ * @param {Object} store A store API
+ */
 var createRoutes = function(app, model, store) {
   var key;
   for(var propName in model.properties) {
@@ -92,7 +99,23 @@ var createRoutes = function(app, model, store) {
     });
   });
 };
-
+/**
+ * Add routes to Express for a basic rest web service. The
+ * web service includes:
+ *
+ * GET returns the entire data set
+ * GET :id returns a single document
+ * POST :id {doc} updates a single document
+ * PUT {doc} adds a single document
+ * DELETE :id deletes a single document
+ *
+ * It creates routes for each model listed in the input file
+ * It also creates a route for getting the meta-data
+ *
+ * @param {Object} app   The Express Object
+ * @param {Object} model basic JSON object that describes the models
+ * @param {Object} store A store API
+ */
 module.exports = function(app, json, store) {
   for(var modelName in json.models) {
     createRoutes(app, json.models[modelName], store);
