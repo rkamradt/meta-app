@@ -2,6 +2,7 @@
   "name": "meta-app",
   "version": "0.0.1",
   "description": "A metadata based app builder",
+  "main": "index.js",
   "scripts": {
     "test": "grunt test"
   },
