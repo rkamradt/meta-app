@@ -1,3 +1,10 @@
+/**
+ *
+ * Copyright 2015 Randal L Kamradt Sr.
+ *
+ * Meta App.
+ * @module index
+ */
 var fileStore = require('./meta-data/file-storage');
 var memoryStore = require('./meta-data/mem-storage');
 var mongoStore = require('./meta-data/mongo-storage');

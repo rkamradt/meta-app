@@ -1,3 +1,10 @@
+/**
+ *
+ * Copyright 2015 Randal L Kamradt Sr.
+ *
+ * Mongo Storage.
+ * @module meta-data/mongo-storage
+ */
 var fs = require('fs');
 var MongoClient = require('mongodb').MongoClient;
 

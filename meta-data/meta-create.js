@@ -1,4 +1,11 @@
 /**
+ *
+ * Copyright 2015 Randal L Kamradt Sr.
+ *
+ * Object creation.
+ * @module meta-data/meta-create
+ */
+/**
  * An API for dealing with object manipulation
  * @param  {Object} json The data definition
  * @return {Object}      The API object

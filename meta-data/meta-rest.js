@@ -1,9 +1,10 @@
-// REST methods:
-// GET returns a list with optional filters
-// GET :id returns a single document
-// POST :id {doc} updates a single document
-// PUT {doc} adds a single document
-// DELETE :id deletes a single document
+/**
+ *
+ * Copyright 2015 Randal L Kamradt Sr.
+ *
+ * REST router.
+ * @module meta-data/meta-rest
+ */
 /**
  * An internal function that creates a route for
  * a single model

@@ -1,4 +1,11 @@
 /**
+ *
+ * Copyright 2015 Randal L Kamradt Sr.
+ *
+ * Memory Storage.
+ * @module meta-data/mem-storage
+ */
+/**
  * A memory store API.
  * @param  {Object} m        The model description
  * @return {Object}          The API Object

@@ -1,3 +1,10 @@
+/**
+ *
+ * Copyright 2015 Randal L Kamradt Sr.
+ *
+ * File Storage.
+ * @module meta-data/file-storage
+ */
 var fs = require('fs');
 /**
  * A file store API.
