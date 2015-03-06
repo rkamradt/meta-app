@@ -3,7 +3,7 @@
 A meta-data base application framework
 
 Usage:
-
+```
 var json = JSON.parse(fs.readFileSync('meta-data.json'));
 var metaApp = require('meta-app')(json);
 //create a memory store:
@@ -19,3 +19,4 @@ var express = require('express');
 // ... add necessary middleware
 
 metaApp.useMetaRest(app, mongostore); // create a rest ws that stores to mongo
+```
