@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   grunt.loadNpmTasks('grunt-simple-mocha');
+  grunt.loadNpmTasks('grunt-jsdoc');
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
@@ -14,6 +15,14 @@ module.exports = function(grunt) {
         },
         files: {
           src: ['Gruntfile.js', 'meta-data/**/*.js', 'test/**/*.js']
+        }
+    },
+    jsdoc : {
+        dist : {
+            src: ['index.js', 'meta-data/*.js'],
+            options: {
+                destination: 'doc'
+            }
         }
     },
     clean: {
@@ -45,6 +54,7 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', ['watch']);
+  grunt.registerTask('docs', ['jsdoc']);
   grunt.registerTask('test', ['jshint','simplemocha' ]);
 
 };

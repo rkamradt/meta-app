@@ -1,0 +1,18 @@
+{
+  "name": "sample",
+  "version": "1.0.0",
+  "description": "a sample application that uses the meta-app library",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "author": "Randal L Kamradt Sr.",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.12.0",
+    "express": "^4.12.2",
+    "meta-app": "0.0.1",
+    "method-override": "^2.3.1",
+    "morgan": "^1.5.1"
+  }
+}
