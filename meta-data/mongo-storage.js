@@ -10,21 +10,15 @@ var MongoClient = require('mongodb').MongoClient;
 
 /**
  * A store API backed by mongo database
- * @param  {Object} m              The model description
+ * @param  {Object} model          The model description
  * @param  {String} url            The Mongo URL
  * @param  {String} collectionName The Mongo Collection
  * @return {Object}                The API Object
  */
-module.exports = function(m, url, collectionName) {
-  var keyProp = null;
-  for(var propName in m.properties) {
-    if(m.properties[propName].key) {
-      keyProp = m.properties[propName];
-      break;
-    }
-  }
+module.exports = function(model, url, collectionName) {
   return {
-    '_key': keyProp,
+    '_model': model,
+    '_key': model.getKey(),
     '_collectionName': collectionName,
     '_db': null,
     '_collection': null,

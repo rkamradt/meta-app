@@ -36,6 +36,7 @@ var createRoutes = function(app, model, store) {
   app.get('/' + model.name + '/:id', function(req, res) {
     store.find(req.params.id, function(err, result) {
       if(err) {
+        console.log('error in get ' + err);
         res.status(500).send(err);
       } else {
         if(!result) {
@@ -47,7 +48,7 @@ var createRoutes = function(app, model, store) {
       res.end();
     });
   });
-  app.post('/' + model.name + '/:id', function(req, res) {
+  app.put('/' + model.name + '/:id', function(req, res) {
     var item = JSON.parse(req.body);
     item[key] = req.params.id; // ensure id matches
     store.find(req.params.id, function(err, result) {
@@ -78,7 +79,7 @@ var createRoutes = function(app, model, store) {
       }
     });
   });
-  app.put('/' + model.name, function(req, res) {
+  app.post('/' + model.name + '/:id', function(req, res) {
     var item = req.body;
     store.add(item,function(err, result) {
       if(err) {
@@ -106,21 +107,24 @@ var createRoutes = function(app, model, store) {
  *
  * GET returns the entire data set
  * GET :id returns a single document
- * POST :id {doc} updates a single document
- * PUT {doc} adds a single document
+ * POST {doc} creates a single document
+ * PUT :id {doc} updates a single document
  * DELETE :id deletes a single document
  *
  * It creates routes for each model listed in the input file
  * It also creates a route for getting the meta-data
  *
+ * TODO pass in a store factory to account for each model in models
+ *
  * @param {Object} app   The Express Object
  * @param {Object} model basic JSON object that describes the models
  * @param {Object} store A store API
  */
-module.exports = function(app, json, store) {
-  for(var modelName in json.models) {
-    createRoutes(app, json.models[modelName], store);
-
+module.exports = function(app, models, store) {
+  for(var modelName in models.getModels()) {
+    console.log('creating Route for model ' + modelName);
+    var model = models.getModel(modelName);
+    createRoutes(app, model, store);
   }
   app.get('/metadata', function(req, res) {
     res.status(200).type('json').send(JSON.stringify(json));
@@ -128,9 +132,10 @@ module.exports = function(app, json, store) {
   });
   app.get('/metadata/:id', function(req, res) {
     var model;
-    for(var modelName in json.models) {
-      if(json.models[modelName].name === req.params.id) {
-        model = json.models[modelName];
+    for(var modelName in models.getModels()) {
+      var m = models.getModel(modelName);
+      if(m.getName() === req.params.id) {
+        model = m;
         break;
       }
     }

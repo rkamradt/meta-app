@@ -6,18 +6,18 @@ var methodOverride = require('method-override');
 var fs = require('fs');
 var morgan = require('morgan');
 var mongostore = require('../meta-data/mongo-storage');
-var metadataMap = require('../meta-data/meta-create');
+var modelsFactory = require('../meta-data/meta-models');
 var router = require('../meta-data/meta-rest');
 
 var url = 'mongodb://localhost:27017/myproject';
 
-describe('Rest API', function(){
+describe.skip('Rest API with mongo storage', function(){
   var app;
   before(function(done) {
     app = express();
     // todo parameterize this to allow production/test alternatives
     var json = JSON.parse(fs.readFileSync('test/meta-data.json'));
-    var metadata = metadataMap(json);
+    var models = modelsFactory(json);
 
     app.use(bodyParser.urlencoded({extended: true}));
 
@@ -25,7 +25,7 @@ describe('Rest API', function(){
     app.use(bodyParser.json());
     app.use(methodOverride());
     app.use(morgan("dev", { format: 'dev', immediate: true }));
-    router(app, json, mongostore(metadata.findMetadata('User'), url, 'user'));
+    router(app, models, mongostore(models.getModel('User'), url, 'User'));
     done();
   });
   it('should be able to insert a new User', function(done) {
@@ -36,7 +36,7 @@ describe('Rest API', function(){
       "password": "RjklstTJR"
     };
     request(app)
-      .put('/User')
+      .post('/User')
       .send(body)
       .expect(200) //Status code
       .end(function(err,res) {
@@ -65,7 +65,7 @@ describe('Rest API', function(){
     request(app)
       .get('/metadata/User')
       .expect(200) //Status code
-//      .expect('Content-Type', /json/)
+      .expect('Content-Type', /json/)
       .end(function(err,res) {
         if (err) {
           throw err;

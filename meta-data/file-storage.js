@@ -8,20 +8,14 @@
 var fs = require('fs');
 /**
  * A file store API.
- * @param  {Object} m        The model description
- * @param  {String} fileName The file to use as a store
+ * @param  {Object} models   The models description
+ * @param  {string} fileName The file to use as a store
  * @return {Object}          The API Object
  */
-module.exports = function(m, fileName) {
-  var keyProp = null;
-  for(var propName in m.properties) {
-    if(m.properties[propName].key) {
-      keyProp = m.properties[propName];
-      break;
-    }
-  }
+module.exports = function(model, fileName) {
   return {
-    '_key': keyProp,
+    '_model': model,
+    '_key': model.getKey(),
     '_fileStore': fileName,
     '_data': [],
     '_readData': function(done) {

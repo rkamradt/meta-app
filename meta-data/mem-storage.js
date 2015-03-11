@@ -7,20 +7,13 @@
  */
 /**
  * A memory store API.
- * @param  {Object} m        The model description
+ * @param  {Object} model    The model description
  * @return {Object}          The API Object
  */
-module.exports = function(m) {
-  var metadata = m;
-  var keyProp = null;
-  for(var propName in metadata.properties) {
-    if(metadata.properties[propName].key) {
-      keyProp = metadata.properties[propName];
-      break;
-    }
-  }
+module.exports = function(model) {
   return {
-
+    '_model': model,
+    '_key': model.getKey(),
     '_data': [],
     /**
      * load an array of data into a store
@@ -55,13 +48,13 @@ module.exports = function(m) {
      * @param  {Function} done The callback when done
      */
     'find': function(key, done) {
-      if(!keyProp) {
+      if(!this._key) {
         done('no key found for metadata');
         return;
       }
       var ret = null; // if not found return null
       for(var i = 0; i < this._data.length; i++) {
-        if(this._data[i][keyProp.name] === key) {
+        if(this._data[i][this._key.name] === key) {
           ret = this._data[i];
           break;
         }
@@ -74,13 +67,13 @@ module.exports = function(m) {
      * @param  {Function} done The callback when done
      */
     'remove': function(key, done) {
-      if(!keyProp) {
+      if(!this._key) {
         done('no key found for metadata');
         return;
       }
       var ret = null; // if not found, do nothing and return null
       for(var i = 0; i < this._data.length; i++) {
-        if(this._data[i][keyProp.name] === key) {
+        if(this._data[i][this._key.name] === key) {
           ret = this._data.splice(i, 1)[0];
           break;
         }

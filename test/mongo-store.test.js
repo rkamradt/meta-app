@@ -1,15 +1,15 @@
 var should = require('should');
 var fs = require('fs');
-var metadataMap = require('../meta-data/meta-create.js');
+var modelsFactory = require('../meta-data/meta-models.js');
 var mongostore = require('../meta-data/mongo-storage.js');
 var MongoClient = require('mongodb').MongoClient;
 
 var url = 'mongodb://localhost:27017/myproject';
 
-var loadFromData = function(metadata, data, sut, done) {
+var loadFromData = function(model, data, sut, done) {
   var list = [];
   for(var d in data) {
-    list.push(metadata.create('User', data[d]));
+    list.push(model.create(data[d]));
   }
   sut.load(list, done);
 };
@@ -17,12 +17,12 @@ var loadFromData = function(metadata, data, sut, done) {
 describe('Mongo storage', function() {
   var json;
   var data;
-  var metadata;
+  var model;
   var collectionName = 'user';
   before(function(done) {
     json = JSON.parse(fs.readFileSync('test/meta-data.json'));
     data = JSON.parse(fs.readFileSync('test/test-data.json'));
-    metadata = metadataMap(json);
+    model = modelsFactory(json).getModel('User');
     done();
   });
   beforeEach(function(done) {
@@ -44,8 +44,8 @@ describe('Mongo storage', function() {
   });
   describe('load data based from array', function() {
     it('should be able to store data from an array', function(done) {
-      var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
-      var list = loadFromData(metadata, data, sut, function(err) {
+      var sut = mongostore(model,url,collectionName); // create a file store to test
+      var list = loadFromData(model, data, sut, function(err) {
         should.not.exist(err);
         sut.findAll(function(err, result) {
           should.not.exist(err);
@@ -56,8 +56,8 @@ describe('Mongo storage', function() {
     });
     describe('add data to store', function() {
       it('should be able to add to store', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
-        var newObj = metadata.create("User");
+        var sut = mongostore(model,url,collectionName); // create a file store to test
+        var newObj = model.create();
         newObj.email='test@test.com';
         newObj.firstName='Test';
         newObj.lastName='McTest';
@@ -76,8 +76,8 @@ describe('Mongo storage', function() {
     });
     describe('find data from store', function() {
       it('should be able to find email from store', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
-        loadFromData(metadata, data, sut, function(err) {
+        var sut = mongostore(model,url,collectionName); // create a file store to test
+        loadFromData(model, data, sut, function(err) {
           should.not.exist(err);
           sut.find('randysr@kamradtfamily.net', function(err, result) {
             should.not.exist(err);
@@ -91,8 +91,8 @@ describe('Mongo storage', function() {
     });
     describe('retrieve all data from store', function() {
       it('should be able to retrieve all data from store', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
-        loadFromData(metadata, data, sut, function(err) {
+        var sut = mongostore(model,url,collectionName); // create a file store to test
+        loadFromData(model, data, sut, function(err) {
           should.not.exist(err);
           sut.findAll(function(err, result) {
             should.not.exist(err);
@@ -104,8 +104,8 @@ describe('Mongo storage', function() {
     });
     describe('remove data from store', function() {
       it('should be able to remove data from store', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
-        loadFromData(metadata, data, sut, function(err) {
+        var sut = mongostore(model,url,collectionName); // create a file store to test
+        loadFromData(model, data, sut, function(err) {
           should.not.exist(err);
           sut.remove('randysr@kamradtfamily.net', function(err, result) {
             should.not.exist(err);
@@ -120,8 +120,8 @@ describe('Mongo storage', function() {
         });
       });
       it('should return null if data to be removed doesnt exist', function(done) {
-        var sut = mongostore(metadata.findMetadata('User'),url,collectionName); // create a file store to test
-        loadFromData(metadata, data, sut, function(err) {
+        var sut = mongostore(model,url,collectionName); // create a file store to test
+        loadFromData(model, data, sut, function(err) {
           should.not.exist(err);
           sut.remove('bad@bad.com', function(err, result) {
             should.not.exist(err);
