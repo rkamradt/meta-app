@@ -25,7 +25,7 @@ describe('model access', function() {
     });
     it('should find the name property is not key', function() {
       var sut = modelFactory(json.models[0]);
-      should.not.exist(sut.getProperty('firstName').isKey());
+      sut.getProperty('firstName').isKey().should.be.exactly(false);
     });
     it('should not be able to find property for foo', function() {
       var sut = modelFactory(json.models[0]);

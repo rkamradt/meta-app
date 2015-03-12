@@ -38,25 +38,5 @@ module.exports = function(json) {
       }
       return metadata;
     },
-    /**
-     * Apply data values to an object
-     * @param  {string} modelName The modelname
-     * @param  {Object} obj      The Object to update
-     * @param  {Object} data     The data to apply
-     */
-    'apply': function(modelName, obj, data) {
-      var model = this.getModel(modelName);
-      model.apply(obj, data);
-    },
-    /**
-     * Create a new data object that conforms to the data defintion
-     * @param  {String} modelName The model to use
-     * @param  {Object} data      The data to optionally apply
-     * @return {Object}           The new object
-     */
-    'create': function(modelName, data) {
-      var model = this.getModel(modelName);
-      return model.create(data);
-    }
   };
 };
