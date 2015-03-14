@@ -69,6 +69,18 @@ module.exports = function(json) {
         this.apply(ret, data);
       }
       return ret;
+    },
+    'isValid': function(data) {
+      for(var propName in data) {
+        var prop = this.getProperty(propName);
+        if(!prop) { // should we have a flag that allows un-named propertys?
+          throw Error('unknown property ' + propName);
+        }
+        if(!prop.isValid(data[propName])) {
+          return false; // we should return information about why?
+        }
+      }
+      return true;
     }
   };
 };

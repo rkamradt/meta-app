@@ -67,6 +67,16 @@ describe('property access', function() {
       sut.getPattern().should.be.instanceof(Object);
     });
   });
-  describe('Get the pattern/type of the property', function() {
+  describe('Determine if the value is valid for the property', function() {
+    it('should be able to determine if an email is valid', function() {
+      var sut = propertyFactory({name: 'test', type: 'email'});
+      sut.isValid('randysr@kamradtfamily.net').should.be.exactly(true);
+      sut.isValid('randysr#kamradtfamily.net').should.be.exactly(false);
+    });
+    it('should be able to determine if value matches pattern', function() {
+      var sut = propertyFactory({name: 'test', pattern: /^[0-9]$/});
+      sut.isValid('1').should.be.exactly(true);
+      sut.isValid('a').should.be.exactly(false);
+    });
   });
 });

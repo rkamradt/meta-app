@@ -13,7 +13,7 @@ module.exports = function(json) {
       }
       this._key = json.key || false;
       this._name = json.name;
-      this._required = json.required || false;
+      this._required = json.required || json.key || false;
       this._pattern = json.pattern;
       this._type = json.type || 'string';
       this._default = json.deflt;
@@ -46,7 +46,7 @@ module.exports = function(json) {
       return this._type;
     },
     'isRequired': function() {
-      return this._required || this._key;
+      return this._required;
     },
     'getPattern': function() {
       if(!this._pattern && this._type) {
@@ -57,13 +57,10 @@ module.exports = function(json) {
     },
     'isValid': function(obj) {
       if(!obj) {
-        return true;
-      }
-      if(!obj[this._name]) {
-        return !this._required;
+        return this.isRequired();
       }
       if(this.getPattern()) {
-        return this.getPattern().test(obj[this._name]);
+        return this.getPattern().test(obj);
       }
       return true;
     }

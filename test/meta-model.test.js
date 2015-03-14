@@ -59,4 +59,36 @@ describe('model access', function() {
       }
     });
   });
+  describe('Determine if the object is valid for the metadata', function() {
+    it('should be able to determine if an email is valid', function() {
+      var sut = modelFactory({
+        name: 'Model',
+        properties: [
+          {name: 'test', type: 'email'}]});
+      var obj = { test: 'randysr@kamradtfamily.net'};
+      sut.isValid(obj).should.be.exactly(true);
+      obj.test = 'randysr#kamradtfamily.net';
+      sut.isValid(obj).should.be.exactly(false);
+      sut.isValid({}).should.be.exactly(true);
+    });
+    it('should be able to determine if value matches pattern', function() {
+      var sut = modelFactory({
+        name: 'Model',
+        properties: [
+          {name: 'test', pattern: /^[0-9]$/}]});
+      var obj = { test: '1'};
+      sut.isValid(obj).should.be.exactly(true);
+      obj.test = 'a';
+      sut.isValid(obj).should.be.exactly(false);
+      sut.isValid({}).should.be.exactly(true);
+      obj.test = '1'; // set test back to good
+      obj.badProp = 'a'; // create unexpected property
+      try {
+        sut.isValid(obj);
+      } catch(e) {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.exactly('unknown property badProp');
+      }
+    });
+  });
 });
