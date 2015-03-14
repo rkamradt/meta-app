@@ -1,6 +1,6 @@
 {
   "name": "meta-app",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A metadata based app builder",
   "main": "index.js",
   "scripts": {
