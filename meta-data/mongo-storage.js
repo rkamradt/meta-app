@@ -115,7 +115,7 @@ module.exports = function(model, url, collectionName) {
           done(err);
         }
         var kobj = {};
-        kobj[self._key.name] = key;
+        kobj[self._key.getName()] = key;
         self._collection.find(kobj).toArray(function(err, docs) {
           self._db.close();
           var ret;
@@ -143,7 +143,7 @@ module.exports = function(model, url, collectionName) {
           done(err);
         }
         var kobj = {};
-        kobj[self._key.name] = key;
+        kobj[self._key.getName()] = key;
         self._collection.find(kobj).toArray(function(err, docs) {
           var ret;
           if(!err && docs.length !== 0) {

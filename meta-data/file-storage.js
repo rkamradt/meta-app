@@ -108,7 +108,7 @@ module.exports = function(model, fileName) {
         }
         var ret = null; // if not found return null
         for(var i = 0; i < self._data.length; i++) {
-          if(self._data[i][self._key.name] === key) {
+          if(self._data[i][self._key.getName()] === key) {
             ret = self._data[i];
             break;
           }
@@ -133,7 +133,7 @@ module.exports = function(model, fileName) {
         }
         var ret = null; // if not found, do nothing and return null
         for(var i = 0; i < self._data.length; i++) {
-          if(self._data[i][self._key.name] === key) {
+          if(self._data[i][self._key.getName()] === key) {
             ret = self._data.splice(i, 1)[0];
             break;
           }

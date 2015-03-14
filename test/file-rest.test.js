@@ -10,7 +10,7 @@ var modelsFactory = require('../meta-data/meta-models');
 var router = require('../meta-data/meta-rest');
 
 
-describe.skip('Rest API with file storage', function(){
+describe('Rest API with file storage', function(){
   var app;
   before(function(done) {
     app = express();
@@ -49,8 +49,8 @@ describe.skip('Rest API with file storage', function(){
   it('should be able to find a User by email', function(done) {
     request(app)
       .get('/User/randysr@kamradtfamily.net')
-//      .expect(200) //Status code
-//      .expect('Content-Type', /json/)
+      .expect(200) //Status code
+      .expect('Content-Type', /json/)
       .end(function(err,res) {
         if (err) {
           throw err;

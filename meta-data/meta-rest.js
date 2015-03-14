@@ -14,16 +14,11 @@
  * @param {Object} store A store API
  */
 var createRoutes = function(app, model, store) {
-  var key;
-  for(var propName in model.properties) {
-    if(model.properties[propName].key) {
-      key = model.properties[propName].name;
-    }
-  }
+  var key = model.getKey();
   if(!key) { // ignore models without keys
     return;
   }
-  app.get('/' + model.name, function(req, res) {
+  app.get('/' + model.getName(), function(req, res) {
     store.findAll(function(err, result) {
       if(err) {
         res.status(500).send(err);
@@ -33,10 +28,9 @@ var createRoutes = function(app, model, store) {
       res.end();
     });
   });
-  app.get('/' + model.name + '/:id', function(req, res) {
+  app.get('/' + model.getName() + '/:id', function(req, res) {
     store.find(req.params.id, function(err, result) {
       if(err) {
-        console.log('error in get ' + err);
         res.status(500).send(err);
       } else {
         if(!result) {
@@ -48,9 +42,9 @@ var createRoutes = function(app, model, store) {
       res.end();
     });
   });
-  app.put('/' + model.name + '/:id', function(req, res) {
+  app.put('/' + model.getName() + '/:id', function(req, res) {
     var item = JSON.parse(req.body);
-    item[key] = req.params.id; // ensure id matches
+    item[key.getName()] = req.params.id; // ensure id matches
     store.find(req.params.id, function(err, result) {
       if(err) {
         res.status(500).send(err);
@@ -79,8 +73,9 @@ var createRoutes = function(app, model, store) {
       }
     });
   });
-  app.post('/' + model.name + '/:id', function(req, res) {
+  app.post('/' + model.getName() + '/:id', function(req, res) {
     var item = req.body;
+    item[key.getName()] = req.params.id; // ensure id matches
     store.add(item,function(err, result) {
       if(err) {
         res.status(500).send(err);
@@ -90,7 +85,7 @@ var createRoutes = function(app, model, store) {
       res.end();
     });
   });
-  app.delete('/' + model.name + '/:id', function(req, res) {
+  app.delete('/' + model.getName() + '/:id', function(req, res) {
     store.remove(req.params.id, function(err, result) {
       if(err) {
         res.status(500).send(err);
@@ -122,12 +117,11 @@ var createRoutes = function(app, model, store) {
  */
 module.exports = function(app, models, store) {
   for(var modelName in models.getModels()) {
-    console.log('creating Route for model ' + modelName);
     var model = models.getModel(modelName);
     createRoutes(app, model, store);
   }
   app.get('/metadata', function(req, res) {
-    res.status(200).type('json').send(JSON.stringify(json));
+    res.status(200).type('json').send(JSON.stringify(models._json));
     res.end();
   });
   app.get('/metadata/:id', function(req, res) {
@@ -142,7 +136,7 @@ module.exports = function(app, models, store) {
     if(!model) {
       res.status(404).type('json');
     } else {
-      res.status(200).type('json').send(JSON.stringify(model));
+      res.status(200).type('json').send(JSON.stringify(model._json));
     }
     res.end();
   });

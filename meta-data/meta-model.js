@@ -15,7 +15,7 @@ module.exports = function(json) {
     '_key': (function(json) {
       for(var propName in json.properties) {
         if(json.properties[propName].key) {
-          return json.properties[propName];
+          return propertyFactory(json.properties[propName]);
         }
       }
     })(json),

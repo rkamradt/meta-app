@@ -11,7 +11,7 @@ var router = require('../meta-data/meta-rest');
 
 var url = 'mongodb://localhost:27017/myproject';
 
-describe.skip('Rest API with mongo storage', function(){
+describe('Rest API with mongo storage', function(){
   var app;
   before(function(done) {
     app = express();
@@ -36,7 +36,7 @@ describe.skip('Rest API with mongo storage', function(){
       "password": "RjklstTJR"
     };
     request(app)
-      .post('/User')
+      .post('/User/randysr@kamradtfamily.net')
       .send(body)
       .expect(200) //Status code
       .end(function(err,res) {

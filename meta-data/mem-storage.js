@@ -54,7 +54,7 @@ module.exports = function(model) {
       }
       var ret = null; // if not found return null
       for(var i = 0; i < this._data.length; i++) {
-        if(this._data[i][this._key.name] === key) {
+        if(this._data[i][this._key.getName()] === key) {
           ret = this._data[i];
           break;
         }
@@ -73,7 +73,7 @@ module.exports = function(model) {
       }
       var ret = null; // if not found, do nothing and return null
       for(var i = 0; i < this._data.length; i++) {
-        if(this._data[i][this._key.name] === key) {
+        if(this._data[i][this._key.getName()] === key) {
           ret = this._data.splice(i, 1)[0];
           break;
         }
