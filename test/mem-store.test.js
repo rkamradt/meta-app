@@ -1,7 +1,7 @@
 var should = require('should');
 var fs = require('fs');
 var modelsFactory = require('../meta-data/meta-models.js');
-var memorystore = require('../meta-data/mem-storage.js');
+var store = require('../meta-data/mem-storage.js');
 
 var loadFromData = function(model, data, sut, done) {
   var list = [];
@@ -23,7 +23,7 @@ describe('Memory storage', function() {
   });
   describe('load data based from array', function() {
     it('should be able to store data from an array', function(done) {
-      var sut = memorystore(model); // create a memory store to test
+      var sut = store(model); // create a memory store to test
       loadFromData(model, data, sut, function(err, result) {
         should.not.exist(err);
         sut.findAll(function(err, result) {
@@ -33,9 +33,38 @@ describe('Memory storage', function() {
         });
       });
     });
+    describe('update data in the store', function() {
+      it('should be able to update the store', function(done) {
+        var sut = store(model); // create a memory store to test
+        var newObj = model.create();
+        newObj.email='test@test.com';
+        newObj.firstName='Test';
+        newObj.lastName='McTest';
+        sut.add(newObj, function(err, result) {
+          should.not.exist(err);
+          result.should.be.exactly(1);
+          sut.find('test@test.com', function(err, result) {
+            should.not.exist(err);
+            result.should.be.instanceOf(Object);
+            result.should.have.property('firstName', newObj.firstName);
+            result.should.have.property('lastName', newObj.lastName);
+            result.firstName = 'Test2';
+            sut.update(result, function(err, result) {
+              should.not.exist(err);
+              sut.find('test@test.com', function(err, result) {
+                should.not.exist(err);
+                result.should.be.instanceOf(Object);
+                result.should.have.property('firstName', 'Test2');
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
     describe('add data to store', function() {
       it('should be able to add to store', function(done) {
-        var sut = memorystore(model); // create a memory store to test
+        var sut = store(model); // create a memory store to test
         var newObj = model.create();
         newObj.email='test@test.com';
         newObj.firstName='Test';
@@ -55,7 +84,7 @@ describe('Memory storage', function() {
     });
     describe('find data from store', function() {
       it('should be able to find email from store', function(done) {
-        var sut = memorystore(model); // create a memory store to test
+        var sut = store(model); // create a memory store to test
         loadFromData(model, data, sut, function(err, result) {
           should.not.exist(err);
           sut.find('randysr@kamradtfamily.net', function(err, result) {
@@ -70,7 +99,7 @@ describe('Memory storage', function() {
     });
     describe('retrieve all data from store', function() {
       it('should be able to retrieve all data from store', function(done) {
-        var sut = memorystore(model); // create a memory store to test
+        var sut = store(model); // create a memory store to test
         loadFromData(model, data, sut, function(err, result) {
           should.not.exist(err);
           sut.findAll(function(err, result) {
@@ -83,7 +112,7 @@ describe('Memory storage', function() {
     });
     describe('remove data from store', function() {
       it('should be able to remove data from store', function(done) {
-        var sut = memorystore(model); // create a memory store to test
+        var sut = store(model); // create a memory store to test
         loadFromData(model, data, sut, function(err, result) {
           should.not.exist(err);
           sut.remove('randysr@kamradtfamily.net', function(err, result) {
@@ -99,7 +128,7 @@ describe('Memory storage', function() {
         });
       });
       it('should return null if data to be removed doesnt exist', function(done) {
-        var sut = memorystore(model); // create a memory store to test
+        var sut = store(model); // create a memory store to test
         loadFromData(model, data, sut, function(err, result) {
           should.not.exist(err);
           sut.remove('bad@bad.com', function(err, result) {

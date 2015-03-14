@@ -11,7 +11,14 @@
  * @return {Object}      The API object
  */
  var modelFactory = require('./meta-model');
-
+ /**
+  * factory for creating a set of model definitions from json.
+  * This is mostly a container for a set of model definitions
+  * and most functionality is in the model definitions themselves.
+  *
+  * @param  {Object} json the parsed json that defines the model
+  * @return {Object}      An API Object
+  */
 module.exports = function(json) {
   return {
     '_json': json,

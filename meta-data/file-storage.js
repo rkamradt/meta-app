@@ -63,18 +63,49 @@ module.exports = function(model, fileName) {
     },
     /**
      * add an item to the store
-     * @param  {Object}   d    The item to store
+     * @param  {Object}   data    The item to store
      * @param  {Function} done The callback when done
      */
-    'add': function(d, done) {
+    'add': function(data, done) {
       var self = this;
       this._readData(function(err) {
         if(err) {
           done(err);
         }
-        self._data.push(d);
+        self._data.push(data);
         var ret = self._data.length;
         self._writeData(done, ret);
+      });
+    },
+    /**
+     * update an item in the store
+     * @param  {Object}   data    The item to store
+     * @param  {Function} done The callback when done
+     */
+    'update': function(data, done) {
+      if(!this._key) {
+        done('no key found for metadata');
+        return;
+      }
+      var keyValue = data[this._key.getName()];
+      var self = this;
+      this._readData(function(err) {
+        if(err) {
+          done(err);
+        }
+        var ix = -1; // if not found return null
+        for(var i = 0; i < self._data.length; i++) {
+          if(self._data[i][self._key.getName()] === keyValue) {
+            ix = i;
+            break;
+          }
+        }
+        if(ix === -1) {
+          self._data.push(data);
+        } else {
+          self._data[ix] = data;
+        }
+        self._writeData(done);
       });
     },
     /**

@@ -1,5 +1,18 @@
+/**
+ *
+ * Copyright 2015 Randal L Kamradt Sr.
+ *
+ * Meta-data property definition.
+ * @module meta-data/meta-property
+ */
 var propertyFactory = require('./meta-property');
-
+/**
+ * factory for creating a model definition from json. pre-calculates
+ * the map of properties and the key property
+ *
+ * @param  {Object} json the parsed json that defines the model
+ * @return {Object}      An API Object
+ */
 module.exports = function(json) {
   return {
     '_json': json,
@@ -19,15 +32,32 @@ module.exports = function(json) {
         }
       }
     })(json),
+    /**
+     * return the name of this model
+     * @return {string} the name of this model
+     */
     'getName': function() {
       return this._name;
     },
+    /**
+     * returns the property map
+     * @return {Object} the property map
+     */
     'getProperties': function() {
       return this._propertyMap;
     },
+    /**
+     * returns a named property
+     * @param  {string} name the name of the property
+     * @return {Object}      the named property
+     */
     'getProperty': function(name) {
       return this._propertyMap[name];
     },
+    /**
+     * returns the key property
+     * @return {Object} the key property
+     */
     'getKey': function() {
       return this._key;
     },
@@ -70,6 +100,17 @@ module.exports = function(json) {
       }
       return ret;
     },
+    /**
+     * determines if an object complies with all the rules for
+     * this model.
+     *
+     * TODO think about how this returns information about how
+     * an object is invalid and all the possible reasons an
+     * object might be invalid
+     *
+     * @param  {Object} data The object in question
+     * @return {boolean}     True if the object is valid
+     */
     'isValid': function(data) {
       for(var propName in data) {
         var prop = this.getProperty(propName);

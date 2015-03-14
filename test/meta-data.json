@@ -14,7 +14,8 @@
         {
           "name": "email",
           "key": true,
-          "visible": true
+          "visible": true,
+          "type": "email"
         },
         {
           "name": "password",

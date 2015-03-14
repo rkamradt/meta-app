@@ -1,7 +1,7 @@
 var should = require('should');
 var fs = require('fs');
 var modelsFactory = require('../meta-data/meta-models.js');
-var mongostore = require('../meta-data/mongo-storage.js');
+var store = require('../meta-data/mongo-storage.js');
 var MongoClient = require('mongodb').MongoClient;
 
 var url = 'mongodb://localhost:27017/myproject';
@@ -44,7 +44,7 @@ describe('Mongo storage', function() {
   });
   describe('load data based from array', function() {
     it('should be able to store data from an array', function(done) {
-      var sut = mongostore(model,url,collectionName); // create a file store to test
+      var sut = store(model,url,collectionName); // create a file store to test
       var list = loadFromData(model, data, sut, function(err) {
         should.not.exist(err);
         sut.findAll(function(err, result) {
@@ -54,83 +54,112 @@ describe('Mongo storage', function() {
         });
       });
     });
-    describe('add data to store', function() {
-      it('should be able to add to store', function(done) {
-        var sut = mongostore(model,url,collectionName); // create a file store to test
-        var newObj = model.create();
-        newObj.email='test@test.com';
-        newObj.firstName='Test';
-        newObj.lastName='McTest';
-        sut.add(newObj, function(err, result) {
+  });
+  describe('update data in the store', function() {
+    it('should be able to update the store', function(done) {
+      var sut = store(model,url,collectionName); // create a memory store to test
+      var newObj = model.create();
+      newObj.email='test@test.com';
+      newObj.firstName='Test';
+      newObj.lastName='McTest';
+      sut.add(newObj, function(err, result) {
+        should.not.exist(err);
+        result.should.be.exactly(1);
+        sut.find('test@test.com', function(err, result) {
           should.not.exist(err);
-          result.should.be.exactly(1);
-          sut.find('test@test.com', function(err, result) {
+          result.should.be.instanceOf(Object);
+          result.should.have.property('firstName', newObj.firstName);
+          result.should.have.property('lastName', newObj.lastName);
+          result.firstName = 'Test2';
+          sut.update(result, function(err, result) {
             should.not.exist(err);
-            result.should.be.instanceOf(Object);
-            result.should.have.property('firstName', newObj.firstName);
-            result.should.have.property('lastName', newObj.lastName);
+            sut.find('test@test.com', function(err, result) {
+              should.not.exist(err);
+              result.should.be.instanceOf(Object);
+              result.should.have.property('firstName', 'Test2');
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+  describe('add data to store', function() {
+    it('should be able to add to store', function(done) {
+      var sut = store(model,url,collectionName); // create a file store to test
+      var newObj = model.create();
+      newObj.email='test@test.com';
+      newObj.firstName='Test';
+      newObj.lastName='McTest';
+      sut.add(newObj, function(err, result) {
+        should.not.exist(err);
+        result.should.be.exactly(1);
+        sut.find('test@test.com', function(err, result) {
+          should.not.exist(err);
+          result.should.be.instanceOf(Object);
+          result.should.have.property('firstName', newObj.firstName);
+          result.should.have.property('lastName', newObj.lastName);
+          done();
+        });
+      });
+    });
+  });
+  describe('find data from store', function() {
+    it('should be able to find email from store', function(done) {
+      var sut = store(model,url,collectionName); // create a file store to test
+      loadFromData(model, data, sut, function(err) {
+        should.not.exist(err);
+        sut.find('randysr@kamradtfamily.net', function(err, result) {
+          should.not.exist(err);
+          result.should.be.instanceOf(Object);
+          result.should.have.property('firstName', 'Randal');
+          result.should.have.property('lastName', 'Kamradt');
+          done();
+        });
+      });
+    });
+  });
+  describe('retrieve all data from store', function() {
+    it('should be able to retrieve all data from store', function(done) {
+      var sut = store(model,url,collectionName); // create a file store to test
+      loadFromData(model, data, sut, function(err) {
+        should.not.exist(err);
+        sut.findAll(function(err, result) {
+          should.not.exist(err);
+          result.should.be.instanceOf(Array).and.be.length(2);
+          done();
+        });
+      });
+    });
+  });
+  describe('remove data from store', function() {
+    it('should be able to remove data from store', function(done) {
+      var sut = store(model,url,collectionName); // create a file store to test
+      loadFromData(model, data, sut, function(err) {
+        should.not.exist(err);
+        sut.remove('randysr@kamradtfamily.net', function(err, result) {
+          should.not.exist(err);
+          result.should.be.instanceOf(Object);
+          result.should.have.property('firstName', 'Randal');
+          result.should.have.property('lastName', 'Kamradt');
+          sut.findAll(function(err, result) {
+            result.should.be.instanceOf(Array).and.be.length(1);
             done();
           });
         });
       });
     });
-    describe('find data from store', function() {
-      it('should be able to find email from store', function(done) {
-        var sut = mongostore(model,url,collectionName); // create a file store to test
-        loadFromData(model, data, sut, function(err) {
+    it('should return null if data to be removed doesnt exist', function(done) {
+      var sut = store(model,url,collectionName); // create a file store to test
+      loadFromData(model, data, sut, function(err) {
+        should.not.exist(err);
+        sut.remove('bad@bad.com', function(err, result) {
           should.not.exist(err);
-          sut.find('randysr@kamradtfamily.net', function(err, result) {
-            should.not.exist(err);
-            result.should.be.instanceOf(Object);
-            result.should.have.property('firstName', 'Randal');
-            result.should.have.property('lastName', 'Kamradt');
-            done();
-          });
-        });
-      });
-    });
-    describe('retrieve all data from store', function() {
-      it('should be able to retrieve all data from store', function(done) {
-        var sut = mongostore(model,url,collectionName); // create a file store to test
-        loadFromData(model, data, sut, function(err) {
-          should.not.exist(err);
+          should.not.exist(result);
           sut.findAll(function(err, result) {
             should.not.exist(err);
             result.should.be.instanceOf(Array).and.be.length(2);
             done();
-          });
-        });
-      });
-    });
-    describe('remove data from store', function() {
-      it('should be able to remove data from store', function(done) {
-        var sut = mongostore(model,url,collectionName); // create a file store to test
-        loadFromData(model, data, sut, function(err) {
-          should.not.exist(err);
-          sut.remove('randysr@kamradtfamily.net', function(err, result) {
-            should.not.exist(err);
-            result.should.be.instanceOf(Object);
-            result.should.have.property('firstName', 'Randal');
-            result.should.have.property('lastName', 'Kamradt');
-            sut.findAll(function(err, result) {
-              result.should.be.instanceOf(Array).and.be.length(1);
-              done();
-            });
-          });
-        });
-      });
-      it('should return null if data to be removed doesnt exist', function(done) {
-        var sut = mongostore(model,url,collectionName); // create a file store to test
-        loadFromData(model, data, sut, function(err) {
-          should.not.exist(err);
-          sut.remove('bad@bad.com', function(err, result) {
-            should.not.exist(err);
-            should.not.exist(result);
-            sut.findAll(function(err, result) {
-              should.not.exist(err);
-              result.should.be.instanceOf(Array).and.be.length(2);
-              done();
-            });
           });
         });
       });

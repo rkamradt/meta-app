@@ -43,8 +43,13 @@ var createRoutes = function(app, model, store) {
     });
   });
   app.put('/' + model.getName() + '/:id', function(req, res) {
-    var item = JSON.parse(req.body);
+    var item = req.body;
     item[key.getName()] = req.params.id; // ensure id matches
+    if(!model.isValid(item)) {
+      res.status(400).send('invalid');
+      res.end();
+      return;
+    }
     store.find(req.params.id, function(err, result) {
       if(err) {
         res.status(500).send(err);
@@ -54,20 +59,13 @@ var createRoutes = function(app, model, store) {
           res.status(404);
           res.end();
         } else {
-          store.remove(req.params.id, function(err, result) {
+          store.update(item, function(err, result) {
             if(err) {
               res.status(500).send(err);
-              res.end();
             } else {
-              store.add(item, function(err, result) {
-                if(err) {
-                  res.status(500).send(err);
-                } else {
-                  res.status(200);
-                }
-                res.end();
-              });
+              res.status(200);
             }
+            res.end();
           });
         }
       }
@@ -76,11 +74,16 @@ var createRoutes = function(app, model, store) {
   app.post('/' + model.getName() + '/:id', function(req, res) {
     var item = req.body;
     item[key.getName()] = req.params.id; // ensure id matches
+    if(!model.isValid(item)) {
+      res.status(400).send('invalid');
+      res.end();
+      return;
+    }
     store.add(item,function(err, result) {
       if(err) {
         res.status(500).send(err);
       } else {
-        res.status(200);
+        res.status(201);
       }
       res.end();
     });
@@ -90,7 +93,7 @@ var createRoutes = function(app, model, store) {
       if(err) {
         res.status(500).send(err);
       } else {
-        res.status(200);
+        res.status(204);
       }
       res.end();
     });

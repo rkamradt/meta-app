@@ -128,6 +128,35 @@ module.exports = function(model, url, collectionName) {
       });
     },
     /**
+     * update an item by id
+     * @param  {String}   data  The new data
+     * @param  {Function} done The callback when done
+     */
+    'update': function(data, done) {
+      if(!this._key) {
+        done('no key found for metadata');
+        return;
+      }
+      var key = data[this._key];
+      var self = this;
+      this._getCollection(function(err) {
+        if(err) {
+          done(err);
+        }
+        var kobj = {};
+        kobj[self._key.getName()] = key;
+        self._collection.find(kobj).toArray(function(err, docs) {
+          if(docs.length > 0) {
+            data._id = docs[0]._id;
+          }
+          self._collection.save(data, function(err, count) {
+            self._db.close();
+            done(err);
+          });
+        });
+      });
+    },
+    /**
      * Remove an item by key
      * @param  {String}   key  The key value
      * @param  {Function} done The callback when done
