@@ -42,7 +42,7 @@
         
             <div class="description">Copyright 2015 Randal L Kamradt Sr.
 
-Memory Storage.</div>
+Memory Storage. Makes a shallow copy of all objects stored and returned</div>
         
 
         
@@ -294,7 +294,7 @@ Memory Storage.</div>
 
     
 
-    <h4 class="name" id="~add"><span class="type-signature">(inner) </span>add<span class="signature">(d, done)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~add"><span class="type-signature">(inner) </span>add<span class="signature">(data, done)</span><span class="type-signature"></span></h4>
 
     
 
@@ -337,7 +337,7 @@ Memory Storage.</div>
 
         <tr>
             
-                <td class="name"><code>d</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
@@ -417,7 +417,7 @@ Memory Storage.</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line32">line 32</a>
+        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -571,7 +571,7 @@ Memory Storage.</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line50">line 50</a>
+        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line87">line 87</a>
     </li></ul></dd>
     
 
@@ -702,7 +702,7 @@ Memory Storage.</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line41">line 41</a>
+        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
@@ -733,7 +733,7 @@ Memory Storage.</div>
 
     
 
-    <h4 class="name" id="~load"><span class="type-signature">(inner) </span>load<span class="signature">(d, done)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~load"><span class="type-signature">(inner) </span>load<span class="signature">(data, done)</span><span class="type-signature"></span></h4>
 
     
 
@@ -776,7 +776,7 @@ Memory Storage.</div>
 
         <tr>
             
-                <td class="name"><code>d</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
@@ -856,7 +856,7 @@ Memory Storage.</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line23">line 23</a>
+        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -1010,7 +1010,161 @@ Memory Storage.</div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line69">line 69</a>
+        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line106">line 106</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~update"><span class="type-signature">(inner) </span>update<span class="signature">(data, done)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    update an item in the store
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The item to update</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>done</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The callback when done</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="meta-data_mem-storage.js.html">meta-data/mem-storage.js</a>, <a href="meta-data_mem-storage.js.html#line51">line 51</a>
     </li></ul></dd>
     
 
@@ -1052,13 +1206,13 @@ Memory Storage.</div>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-index.html">index</a></li><li><a href="module-meta-data_file-storage.html">meta-data/file-storage</a></li><li><a href="module-meta-data_mem-storage.html">meta-data/mem-storage</a></li><li><a href="module-meta-data_meta-create.html">meta-data/meta-create</a></li><li><a href="module-meta-data_meta-rest.html">meta-data/meta-rest</a></li><li><a href="module-meta-data_mongo-storage.html">meta-data/mongo-storage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#apply">apply</a></li><li><a href="global.html#create">create</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-index.html">index</a></li><li><a href="module-meta-data_file-storage.html">meta-data/file-storage</a></li><li><a href="module-meta-data_mem-storage.html">meta-data/mem-storage</a></li><li><a href="module-meta-data_meta-create.html">meta-data/meta-create</a></li><li><a href="module-meta-data_meta-property.html">meta-data/meta-property</a></li><li><a href="module-meta-data_meta-rest.html">meta-data/meta-rest</a></li><li><a href="module-meta-data_mongo-storage.html">meta-data/mongo-storage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Thu Mar 12 2015 09:58:42 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Sat Mar 14 2015 15:03:35 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

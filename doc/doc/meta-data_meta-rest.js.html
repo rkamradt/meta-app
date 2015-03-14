@@ -42,16 +42,11 @@
  * @param {Object} store A store API
  */
 var createRoutes = function(app, model, store) {
-  var key;
-  for(var propName in model.properties) {
-    if(model.properties[propName].key) {
-      key = model.properties[propName].name;
-    }
-  }
+  var key = model.getKey();
   if(!key) { // ignore models without keys
     return;
   }
-  app.get('/' + model.name, function(req, res) {
+  app.get('/' + model.getName(), function(req, res) {
     store.findAll(function(err, result) {
       if(err) {
         res.status(500).send(err);
@@ -61,10 +56,9 @@ var createRoutes = function(app, model, store) {
       res.end();
     });
   });
-  app.get('/' + model.name + '/:id', function(req, res) {
+  app.get('/' + model.getName() + '/:id', function(req, res) {
     store.find(req.params.id, function(err, result) {
       if(err) {
-        console.log('error in get ' + err);
         res.status(500).send(err);
       } else {
         if(!result) {
@@ -76,9 +70,14 @@ var createRoutes = function(app, model, store) {
       res.end();
     });
   });
-  app.put('/' + model.name + '/:id', function(req, res) {
-    var item = JSON.parse(req.body);
-    item[key] = req.params.id; // ensure id matches
+  app.put('/' + model.getName() + '/:id', function(req, res) {
+    var item = req.body;
+    item[key.getName()] = req.params.id; // ensure id matches
+    if(!model.isValid(item)) {
+      res.status(400).send('invalid');
+      res.end();
+      return;
+    }
     store.find(req.params.id, function(err, result) {
       if(err) {
         res.status(500).send(err);
@@ -88,42 +87,41 @@ var createRoutes = function(app, model, store) {
           res.status(404);
           res.end();
         } else {
-          store.remove(req.params.id, function(err, result) {
+          store.update(item, function(err, result) {
             if(err) {
               res.status(500).send(err);
-              res.end();
             } else {
-              store.add(item, function(err, result) {
-                if(err) {
-                  res.status(500).send(err);
-                } else {
-                  res.status(200);
-                }
-                res.end();
-              });
+              res.status(200);
             }
+            res.end();
           });
         }
       }
     });
   });
-  app.post('/' + model.name + '/:id', function(req, res) {
+  app.post('/' + model.getName() + '/:id', function(req, res) {
     var item = req.body;
+    item[key.getName()] = req.params.id; // ensure id matches
+    if(!model.isValid(item)) {
+      res.status(400).send('invalid');
+      res.end();
+      return;
+    }
     store.add(item,function(err, result) {
       if(err) {
         res.status(500).send(err);
       } else {
-        res.status(200);
+        res.status(201);
       }
       res.end();
     });
   });
-  app.delete('/' + model.name + '/:id', function(req, res) {
+  app.delete('/' + model.getName() + '/:id', function(req, res) {
     store.remove(req.params.id, function(err, result) {
       if(err) {
         res.status(500).send(err);
       } else {
-        res.status(200);
+        res.status(204);
       }
       res.end();
     });
@@ -150,12 +148,11 @@ var createRoutes = function(app, model, store) {
  */
 module.exports = function(app, models, store) {
   for(var modelName in models.getModels()) {
-    console.log('creating Route for model ' + modelName);
     var model = models.getModel(modelName);
     createRoutes(app, model, store);
   }
   app.get('/metadata', function(req, res) {
-    res.status(200).type('json').send(JSON.stringify(json));
+    res.status(200).type('json').send(JSON.stringify(models._json));
     res.end();
   });
   app.get('/metadata/:id', function(req, res) {
@@ -170,7 +167,7 @@ module.exports = function(app, models, store) {
     if(!model) {
       res.status(404).type('json');
     } else {
-      res.status(200).type('json').send(JSON.stringify(model));
+      res.status(200).type('json').send(JSON.stringify(model._json));
     }
     res.end();
   });
@@ -185,13 +182,13 @@ module.exports = function(app, models, store) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-index.html">index</a></li><li><a href="module-meta-data_file-storage.html">meta-data/file-storage</a></li><li><a href="module-meta-data_mem-storage.html">meta-data/mem-storage</a></li><li><a href="module-meta-data_meta-create.html">meta-data/meta-create</a></li><li><a href="module-meta-data_meta-rest.html">meta-data/meta-rest</a></li><li><a href="module-meta-data_mongo-storage.html">meta-data/mongo-storage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#apply">apply</a></li><li><a href="global.html#create">create</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-index.html">index</a></li><li><a href="module-meta-data_file-storage.html">meta-data/file-storage</a></li><li><a href="module-meta-data_mem-storage.html">meta-data/mem-storage</a></li><li><a href="module-meta-data_meta-create.html">meta-data/meta-create</a></li><li><a href="module-meta-data_meta-property.html">meta-data/meta-property</a></li><li><a href="module-meta-data_meta-rest.html">meta-data/meta-rest</a></li><li><a href="module-meta-data_mongo-storage.html">meta-data/mongo-storage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Thu Mar 12 2015 09:58:42 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta1</a> on Sat Mar 14 2015 15:03:35 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>
