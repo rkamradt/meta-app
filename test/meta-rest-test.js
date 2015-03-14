@@ -5,19 +5,18 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var fs = require('fs');
 var morgan = require('morgan');
-var mongostore = require('../meta-data/mongo-storage');
+var memstore = require('../meta-data/mem-storage');
 var modelsFactory = require('../meta-data/meta-models');
 var router = require('../meta-data/meta-rest');
 
-var url = 'mongodb://localhost:27017/myproject';
+var json = JSON.parse(fs.readFileSync('test/meta-data.json'));
+var models = modelsFactory(json);
+var store = memstore(models.getModel('User'));
 
 describe('Rest API with mongo storage', function(){
   var app;
   before(function(done) {
     app = express();
-    // todo parameterize this to allow production/test alternatives
-    var json = JSON.parse(fs.readFileSync('test/meta-data.json'));
-    var models = modelsFactory(json);
 
     app.use(bodyParser.urlencoded({extended: true}));
 
@@ -25,7 +24,7 @@ describe('Rest API with mongo storage', function(){
     app.use(bodyParser.json());
     app.use(methodOverride());
     app.use(morgan("dev", { format: 'dev', immediate: true }));
-    router(app, models, mongostore(models.getModel('User'), url, 'User'));
+    router(app, models, store);
     done();
   });
   it('should be able to insert a new User', function(done) {
