@@ -20,3 +20,5 @@ var express = require('express');
 
 metaApp.useMetaRest(app, mongostore); // create a rest ws that stores to mongo
 ```
+The API docs can be found [here](rkamradt.github.io/meta-app/doc)
+The current code coverage can be found [here](rkamradt.github.io/meta-app/coverage)  

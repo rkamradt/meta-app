@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(morgan('dev', { format: 'dev', immediate: true }));
-metaApp.useMetaRest(app, metaApp.createMongoStore('mongodb://localhost:27017/myproject', 'sample'));
+metaApp.useMetaRest(app, metaApp.createMongoStore('User', 'mongodb://localhost:27017/myproject', 'sample'));
 
 http.createServer(app).listen(9999, function() {
  console.log('Server up: http://localhost:' + 9999);

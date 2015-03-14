@@ -11,7 +11,7 @@
   "dependencies": {
     "body-parser": "^1.12.0",
     "express": "^4.12.2",
-    "meta-app": "0.0.1",
+    "meta-app": "0.1.0",
     "method-override": "^2.3.1",
     "morgan": "^1.5.1"
   }
