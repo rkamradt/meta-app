@@ -1,55 +1,31 @@
 var should = require('should');
 var fs = require('fs');
-var express = require('express');
-var metaApp = require('../index');
-var modelsFactory = require('../meta-data/meta-models');
+var modelsFactory = require('../index.js');
 
 var json = JSON.parse(fs.readFileSync('test/meta-data.json'));
 var data = JSON.parse(fs.readFileSync('test/test-data.json'));
+var models = modelsFactory(json);
 
-describe('Meta-App main', function() {
-  var app;
-  before(function(done) {
-    app = express();
-    done();
-  });
-  describe('Create a memory store', function() {
-    it('should be able to create a memory store', function() {
-      var sut = metaApp(json);
-      var result = sut.createMemoryStore('User');
-      // todo more rigorous tests
-      result.should.be.instanceof(Object);
+describe('models access', function() {
+  describe('get model based on name', function() {
+    it('should be able to find model for User', function() {
+      var sut = models.getModel('User');
+      sut.should.be.instanceof(Object);
+      sut.getName().should.be.exactly('User');
     });
-  });
-  describe('Create a file store', function() {
-    it('should be able to create a file store', function() {
-      var sut = metaApp(json);
-      var result = sut.createFileStore('User', 'testfile.json');
-      // todo more rigorous tests
-      result.should.be.instanceof(Object);
+    it('should be able to find model for modelname2', function() {
+      var sut = models.getModel('modelname2');
+      sut.should.be.instanceof(Object);
+      sut.getName().should.be.exactly('modelname2');
     });
-  });
-  describe('Create a mongo store', function() {
-    it('should be able to create a mongo store', function() {
-      var sut = metaApp(json);
-      var result = sut.createMongoStore('User', 'mongodb://localhost:27017/myproject', 'testCollection');
-      // todo more rigorous tests
-      result.should.be.instanceof(Object);
-    });
-  });
-  describe('Create an object creator', function() {
-    it('should be able to create an object creator', function() {
-      var sut = metaApp(json);
-      var result = sut.modelsFactory();
-      // todo more rigorous tests
-      result.should.be.instanceof(Object);
-    });
-  });
-  describe('Create an rest web service', function() {
-    it('should be able to create a rest web service', function() {
-      var sut = metaApp(json);
-      sut.useMetaRest(app, sut.createMemoryStore('User'));
-      // todo more rigorous tests
+    it('should not be able to find model for foo', function() {
+      try {
+        models.getModel('foo');
+        throw Error('expected exception not thrown');
+      } catch(e) {
+        e.should.be.instanceOf(Error);
+        e.message.should.be.exactly('model foo not found');
+      }
     });
   });
 });
