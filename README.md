@@ -1,9 +1,9 @@
 # meta-app
 
-A meta-data base application framework
+### A meta-data base application framework
 
 Usage:
-```
+```javascript
 var json = JSON.parse(fs.readFileSync('meta-data.json'));
 var metaApp = require('meta-app')(json);
 //create a memory store:
